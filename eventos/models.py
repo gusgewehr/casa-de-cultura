@@ -1,15 +1,22 @@
 from django.db import models
+from django.contrib.auth.models import User
+
+
 
 # Create your models here.
-class Evento(models.Model):
+class Event(models.Model):
     nome = models.CharField(max_length=500)
     descricao = models.CharField(max_length=4000)
     preco_ingresso = models.DecimalField(decimal_places=2)
     ingresso_meia = models.BooleanField()
     ingresso_comunitario = models.BooleanField()
+    usuario = models.ForeignKey(User, on_delete=models.DO_NOTHING)
+
+
+
 
 class EventDates(models.Model):
-    evento = models.ForeignKey(Evento, on_delete = models.CASCADE)
+    evento = models.ForeignKey(Event, on_delete = models.CASCADE)
     date = models.DateTimeField()
     type_choices = (
         ("EN", "Ensaio"),
@@ -18,6 +25,3 @@ class EventDates(models.Model):
         ("DMNT","Desmontagem do Palco"),
     )
     uso = models.CharField(max_length=5, choices=type_choices, default="AP")
-
-
-
