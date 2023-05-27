@@ -16,20 +16,21 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from eventos.views import evento
+from eventos.views import cadastro_eventos
+from eventos.views import eventos
 from django.conf import settings
 from django.conf.urls.static import static
 
 
-
-
-
 urlpatterns = [
-    path("", evento),
+    path("", eventos),
+    path("home", eventos),
+    path("cadastro-eventos", cadastro_eventos),
     path("admin/", admin.site.urls),
 ]
 
 if settings.DEBUG:
-    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-
+    urlpatterns += static(settings.STATIC_URL,
+                          document_root=settings.STATIC_ROOT)
+    urlpatterns += static(settings.MEDIA_URL,
+                          document_root=settings.MEDIA_ROOT)

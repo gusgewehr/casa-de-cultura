@@ -6,7 +6,7 @@ from django.contrib.auth.models import User
 
 
 # Create your views here.
-def evento(request):
+def cadastro_eventos(request):
     curr_user = request.user
 
     if request.method == "POST":
@@ -14,25 +14,23 @@ def evento(request):
 
         print(response)
 
-        
-
-        if(response['meia']):
+        if (response['meia']):
             meia = True
         else:
             meia = False
 
-        if(response['comunitario']):
+        if (response['comunitario']):
             comunitario = True
         else:
             comunitario = False
 
         event = Event(
-            nome = response['nome'],
-            descricao = response['descricao'],
-            preco_ingresso = response['preco'],
-            ingresso_meia = meia,
-            ingresso_comunitario = comunitario,
-            usuario = User.objects.get(pk=1)
+            nome=response['nome'],
+            descricao=response['descricao'],
+            preco_ingresso=response['preco'],
+            ingresso_meia=meia,
+            ingresso_comunitario=comunitario,
+            usuario=User.objects.get(pk=1)
         )
 
         event.save()
@@ -42,19 +40,15 @@ def evento(request):
         time_obj = datetime.strptime(response['hora'], '%H:%M').time()
 
         date_event = EventDates(
-            evento = event,
-            date = datetime.combine(date_obj, time_obj),
-            uso = response['tipo']
+            evento=event,
+            date=datetime.combine(date_obj, time_obj),
+            uso=response['tipo']
         )
 
         date_event.save()
 
-        
+    return render(request, 'cadastroEvento.html')
 
 
+def eventos(request):
     return render(request, 'index.html')
-
-
-
-
-
