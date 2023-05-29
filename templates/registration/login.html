@@ -1,0 +1,34 @@
+{% load static %}
+<html>
+    <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <script src="https://kit.fontawesome.com/8e543a0707.js" crossorigin="anonymous"></script>
+        <link rel="stylesheet" href="{% static 'reset.css' %}">
+        <link rel="stylesheet" href="{% static 'my_style_login.css' %}">
+
+        <title>Portal Analytics Industiral Stara</title>
+        <link rel="icon" type="image/x-icon" href="{% static 'assets/favicon.png' %} ">
+        
+        <meta name='viewport' content='width=device-width, initial-scale=1'>
+        
+    </head>
+    <body>
+        <div class="section_left">
+            <section class="login_card">
+                <h2><b>Entrar</b></h2>
+                <div id="loading">
+                    <div class="loader">
+                    </div>
+                </div>
+                    <form method="post" class="login_form">
+                        {% csrf_token %}
+                        {{ form.as_p }}
+                        <button type="submit">
+                            Entrar
+                        </button>
+                    </form>
+            </section>
+        </div>
+    </body>
+</html>

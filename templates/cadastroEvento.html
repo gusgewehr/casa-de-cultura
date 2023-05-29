@@ -11,7 +11,7 @@
     <p class="mt-2 text-lg leading-8 text-gray-600">Informe os dados do evento que deseja realizar na Casa de Cultura
       Osvaldo Krames</p>
   </div>
-  <form action="/" method="POST" class="mx-auto mt-16 max-w-xl sm:mt-20">
+  <form action="cadastro-eventos" method="POST" class="mx-auto mt-16 max-w-xl sm:mt-20">
     {% csrf_token %}
     <div id="form_body_general" class="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-3">
       <div class="sm:col-span-3">
@@ -74,15 +74,15 @@
     </div>
 
     <div id="date-fields" class="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-3 mt-5">
-      <label for="data" class="block text-sm font-semibold leading-6 text-gray-900">Datas</label>
+      <label for="data_0" class="block text-sm font-semibold leading-6 text-gray-900">Datas</label>
       <button id="add_data" onclick="add_date()" type="button"
         class="text-green-700 hover:text-white border border-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:border-green-500 dark:text-green-500 dark:hover:text-white dark:hover:bg-green-600 dark:focus:ring-green-800">+</button>
       <div class="flex gap-x-4 sm:col-span-3">
-        <input name="data" type="date"
+        <input name="data_0" type="date"
           class="block w-full rounded-md border-0 px-3.5 py-2 pl-4 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
-        <input name="hora" type="time"
+        <input name="hora_0" type="time"
           class="block w-full rounded-md border-0 px-3.5 py-2 pl-4 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
-        <select name="tipo"
+        <select name="tipo_0"
           class="h-full rounded-md border-0 bg-transparent bg-none py-0 pl-4 pr-9 text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm">
           <option value="AP">Apresentação</option>
           <option value="EN">Ensaio</option>
@@ -91,6 +91,7 @@
         </select>
       </div>
     </div>
+    <input type="hidden" value="0" name="number_of_dates" id="number_of_dates">
 
     <div class="mt-10">
       <button type="submit"

@@ -6,6 +6,7 @@ from django.contrib.auth.models import User
 
 
 # Create your views here.
+@login_required
 def cadastro_eventos(request):
     curr_user = request.user
 
@@ -14,38 +15,72 @@ def cadastro_eventos(request):
 
         print(response)
 
-        if (response['meia']):
-            meia = True
-        else:
+        try:
+            if (response['meia']):
+                meia = True
+        except:
             meia = False
-
-        if (response['comunitario']):
-            comunitario = True
-        else:
+        
+        try:
+            if (response['comunitario']):
+                comunitario = True
+        except:
             comunitario = False
+
+        try:
+            if (response['gratuito']):
+                gratuito = True
+        except:
+            gratuito = False
+        
+        try:
+            preco = response['preco']
+            if preco == '':
+                preco = 0
+        except:
+            preco = 0
+
+        
 
         event = Event(
             nome=response['nome'],
             descricao=response['descricao'],
-            preco_ingresso=response['preco'],
+            preco_ingresso=preco,
             ingresso_meia=meia,
             ingresso_comunitario=comunitario,
-            usuario=User.objects.get(pk=1)
+            gratuito=gratuito,
+            usuario=curr_user
         )
 
         event.save()
 
-        date_obj = datetime.strptime(response['data'], '%Y-%m-%d')
+        number_of_dates = int(response['number_of_dates'])
+        if int(number_of_dates) > 0:
+            for i in range(0, number_of_dates):
+                if response['data_{}'.format(i)]:
+                    date_obj = datetime.strptime(response['data_{}'.format(i)], '%Y-%m-%d')
 
-        time_obj = datetime.strptime(response['hora'], '%H:%M').time()
+                    time_obj = datetime.strptime(response['hora_{}'.format(i)], '%H:%M').time()
 
-        date_event = EventDates(
-            evento=event,
-            date=datetime.combine(date_obj, time_obj),
-            uso=response['tipo']
-        )
+                    date_event = EventDates(
+                        evento=event,
+                        date=datetime.combine(date_obj, time_obj),
+                        uso=response['tipo_{}'.format(i)]
+                    )
 
-        date_event.save()
+                    date_event.save()
+        else:
+            date_obj = datetime.strptime(response['data_0'], '%Y-%m-%d')
+
+            time_obj = datetime.strptime(response['hora_0'], '%H:%M').time()
+
+            date_event = EventDates(
+                evento=event,
+                date=datetime.combine(date_obj, time_obj),
+                uso=response['tipo_0']
+            )
+
+            date_event.save()
 
     return render(request, 'cadastroEvento.html')
 
