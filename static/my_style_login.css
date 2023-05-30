@@ -1,6 +1,6 @@
 :root{
     --cinza: #F3F3F3;
-    --laranja: #EE6611;
+    --laranja: #1D4ED8;
     --cinza_escuro: #636363;
 
 }
@@ -19,7 +19,7 @@ body{
     background-color: white;
     color: var(--laranja);
     align-items: center;
-    justify-content: left;
+    justify-content: center;
 }
 b{
     font-weight: bold;

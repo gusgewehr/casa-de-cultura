@@ -4,101 +4,95 @@
 
 {% block content %}
 
-<div class="isolate bg-white px-6 py-24 sm:py-32 lg:px-8">
-
-  <div class="mx-auto max-w-2xl text-center">
-    <h2 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Evento</h2>
-    <p class="mt-2 text-lg leading-8 text-gray-600">Informe os dados do evento que deseja realizar na Casa de Cultura
-      Osvaldo Krames</p>
-  </div>
-  <form action="cadastro-eventos" method="POST" class="mx-auto mt-16 max-w-xl sm:mt-20">
-    {% csrf_token %}
-    <div id="form_body_general" class="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-3">
-      <div class="sm:col-span-3">
-        <label for="nome" class="block text-sm font-semibold leading-6 text-gray-900">Evento</label>
-        <div class="mt-2.5">
-          <input type="text" name="nome" id="nome" autocomplete="organization"
-            class="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
-        </div>
+      <div class="mx-auto max-w-2xl text-center">
+        <h2 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Evento</h2>
+        <p class="mt-2 text-lg leading-8 text-gray-600">Informe os dados do evento que deseja realizar na Casa de Cultura Osvaldo Krames</p>
       </div>
-      <div class="sm:col-span-3">
-        <label for="Descricao" class="block text-sm font-semibold leading-6 text-gray-900">Descricao</label>
-        <div class="mt-2.5">
-          <textarea name="descricao" id="Descricao" rows="4"
-            class="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"></textarea>
+      <form action="/" method="POST" class="mx-auto mt-16 max-w-6xl sm:mt-20">
+        {% csrf_token %}
+        <div id="form_body_general" class="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-3">
+          <div class="sm:col-span-3">
+            <label for="nome" class="block text-sm font-semibold leading-6 text-gray-900">Evento</label>
+            <div class="mt-2.5">
+              <input type="text" name="nome" id="nome" autocomplete="organization" class="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+            </div>
+          </div>
+          <div class="sm:col-span-3">
+            <label for="Descricao" class="block text-sm font-semibold leading-6 text-gray-900">Descricao</label>
+            <div class="mt-2.5">
+              <textarea name="descricao" id="Descricao" rows="4" class="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"></textarea>
+            </div>
+          </div>
+          <div class="sm:col-span-3">
+            <label for="preco" class="block text-sm font-semibold leading-6 text-gray-900">Preço</label>
+            <div class="mt-2.5">
+              <input type="number" name="preco" id="preco"  class="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+            </div>
+          </div>
+          
+            
+          
+          
         </div>
-      </div>
-      <div class="sm:col-span-3">
-        <label for="preco" class="block text-sm font-semibold leading-6 text-gray-900">Preço</label>
-        <div class="mt-2.5">
-          <input type="number" name="preco" id="preco"
-            class="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+        <div class="mt-6 space-y-6">
+          <div class="relative flex gap-x-3">
+            <div class="flex h-6 items-center">
+              <input id="gratuito" name="gratuito" type="checkbox" onclick="free_event_check()"
+                class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600">
+            </div>
+            <div class="text-sm leading-6">
+              <label for="gratuito" class="font-medium text-gray-900">Gratuito</label>
+              <p class="text-gray-500">Selecione quando seu evento não cobrará entrada.</p>
+            </div>
+          </div>
+          
+          <div class="relative flex gap-x-3">
+            <div class="flex h-6 items-center">
+              <input id="meia" name="meia" type="checkbox" class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600">
+            </div>
+            <div class="text-sm leading-6">
+              <label for="meia" class="font-medium text-gray-900">Meia entrada</label>
+              <p class="text-gray-500">Selecione quando seu evento aceita desconto de meia entrada.</p>
+            </div>
+          </div>
+          <div class="relative flex gap-x-3">
+            <div class="flex h-6 items-center">
+              <input id="comunitario" name="comunitario" type="checkbox" class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600">
+            </div>
+            <div class="text-sm leading-6">
+              <label for="comunitario" class="font-medium text-gray-900">Comunitário</label>
+              <p class="text-gray-500">Selecione quando seu evento aceitar receber alimentos ou brinquedos como ingresso.</p>
+            </div>
+          </div>
+          <label for="data" class="block text-sm font-semibold leading-6 text-gray-900">Datas</label>
         </div>
-      </div>
 
-    </div>
+        <div class="date-picker">
+          {% include 'calendar.html' %}
+        </div>
+        
+        
+        
 
-    <div class="mt-4 space-y-6">
-      <div class="relative flex gap-x-3">
-        <div class="flex h-6 items-center">
-          <input id="gratuito" name="gratuito" type="checkbox" onclick="free_event_check()"
-            class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600">
-        </div>
-        <div class="text-sm leading-6">
-          <label for="gratuito" class="font-medium text-gray-900">Gratuito</label>
-          <p class="text-gray-500">Selecione caso o evento não tenha fins lucrativos.</p>
-        </div>
-      </div>
 
-      <div class="relative flex gap-x-3">
-        <div class="flex h-6 items-center">
-          <input id="meia" name="meia" type="checkbox"
-            class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600">
-        </div>
-        <div class="text-sm leading-6">
-          <label for="meia" class="font-medium text-gray-900">Meia entrada</label>
-          <p class="text-gray-500">Selecione quando seu evento aceita desconto de meia entrada.</p>
-        </div>
-      </div>
-      <div class="relative flex gap-x-3">
-        <div class="flex h-6 items-center">
-          <input id="comunitario" name="comunitario" type="checkbox"
-            class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600">
-        </div>
-        <div class="text-sm leading-6">
-          <label for="comunitario" class="font-medium text-gray-900">Comunitário</label>
-          <p class="text-gray-500">Selecione quando seu evento aceitar receber alimentos ou brinquedos como ingresso.
-          </p>
-        </div>
-      </div>
-    </div>
 
-    <div id="date-fields" class="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-3 mt-5">
-      <label for="data_0" class="block text-sm font-semibold leading-6 text-gray-900">Datas</label>
-      <button id="add_data" onclick="add_date()" type="button"
-        class="text-green-700 hover:text-white border border-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:border-green-500 dark:text-green-500 dark:hover:text-white dark:hover:bg-green-600 dark:focus:ring-green-800">+</button>
-      <div class="flex gap-x-4 sm:col-span-3">
-        <input name="data_0" type="date"
-          class="block w-full rounded-md border-0 px-3.5 py-2 pl-4 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
-        <input name="hora_0" type="time"
-          class="block w-full rounded-md border-0 px-3.5 py-2 pl-4 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
-        <select name="tipo_0"
-          class="h-full rounded-md border-0 bg-transparent bg-none py-0 pl-4 pr-9 text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm">
-          <option value="AP">Apresentação</option>
-          <option value="EN">Ensaio</option>
-          <option value="MNT">Montagem do Palco</option>
-          <option value="DMNT">Desmontagem do Palco</option>
-        </select>
-      </div>
-    </div>
-    <input type="hidden" value="0" name="number_of_dates" id="number_of_dates">
 
-    <div class="mt-10">
-      <button type="submit"
-        class="block w-full rounded-md bg-indigo-600 px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Enviar</button>
-    </div>
-  </form>
-</div>
+          
+        <div class="mt-10">
+          <button type="submit" class="block w-full rounded-md bg-indigo-600 px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Enviar</button>
+        </div>
+      </form>
+    
 
+
+
+
+    
+
+    
+    <!-- Tailwind Elements JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/tw-elements/dist/js/tw-elements.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.5/datepicker.min.js"></script>
+  
 
 {% endblock content %}
