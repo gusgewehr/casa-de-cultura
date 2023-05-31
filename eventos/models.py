@@ -15,10 +15,10 @@ class Event(models.Model):
 
 
 
-
 class EventDates(models.Model):
     evento = models.ForeignKey(Event, on_delete = models.CASCADE)
-    date = models.DateTimeField()
+    start_date = models.DateTimeField()
+    end_date = models.DateTimeField()
     type_choices = (
         ("EN", "Ensaio"),
         ("MNT","Montagem do Palco"),

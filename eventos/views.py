@@ -6,7 +6,7 @@ from django.contrib.auth.models import User
 
 
 # Create your views here.
-@login_required
+#@login_required
 def cadastro_eventos(request):
     curr_user = request.user
 
@@ -57,14 +57,17 @@ def cadastro_eventos(request):
         number_of_dates = int(response['number_of_dates'])
         if int(number_of_dates) > 0:
             for i in range(0, number_of_dates):
-                if response['data_{}'.format(i)]:
+                if response['date_{}'.format(i)]:
                     date_obj = datetime.strptime(response['data_{}'.format(i)], '%Y-%m-%d')
 
-                    time_obj = datetime.strptime(response['hora_{}'.format(i)], '%H:%M').time()
+                    start_time_obj = datetime.strptime(response['start_time_{}'.format(i)], '%H:%M').time()
+                    
+                    end_time_obj = datetime.strptime(response['end_time_{}'.format(i)], '%H:%M').time()
 
                     date_event = EventDates(
                         evento=event,
-                        date=datetime.combine(date_obj, time_obj),
+                        start_date=datetime.combine(date_obj, start_time_obj),
+                        end_date=datetime.combine(date_obj, end_time_obj),
                         uso=response['tipo_{}'.format(i)]
                     )
 
@@ -72,13 +75,16 @@ def cadastro_eventos(request):
         else:
             date_obj = datetime.strptime(response['data_0'], '%Y-%m-%d')
 
-            time_obj = datetime.strptime(response['hora_0'], '%H:%M').time()
+            start_time_obj = datetime.strptime(response['start_time_0'], '%H:%M').time()
+                    
+            end_time_obj = datetime.strptime(response['end_time_0'], '%H:%M').time()
 
             date_event = EventDates(
-                evento=event,
-                date=datetime.combine(date_obj, time_obj),
-                uso=response['tipo_0']
-            )
+                    evento=event,
+                    start_date=datetime.combine(date_obj, start_time_obj),
+                    end_date=datetime.combine(date_obj, end_time_obj),
+                    uso=response['tipo_0']
+                )
 
             date_event.save()
 
