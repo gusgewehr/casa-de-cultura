@@ -68,12 +68,20 @@ function add_date(date, start_time, end_time, type){
     type_input.setAttribute("value", type)
     new_div.appendChild(type_input)  
 
-
-    console.log(number_of_dates)
     
     number_of_dates++ 
     update_number_of_dates()   
     
+}
+
+function close_toast(){
+    var toast = document.getElementById("toast-success")
+
+    toast.setAttribute("style", "display: none")
+
+    var toast2 = document.getElementById("toast-danger")
+
+    toast2.setAttribute("style", "display: none")
 }
 
 function rm_date(value){

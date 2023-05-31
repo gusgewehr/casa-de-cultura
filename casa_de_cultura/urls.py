@@ -21,6 +21,7 @@ from eventos.views import eventos
 from django.conf import settings
 from django.conf.urls.static import static
 
+admin.site.site_header = 'Administração Casa de Cultura Osvaldo Krames'
 
 urlpatterns = [
     path("", eventos),
