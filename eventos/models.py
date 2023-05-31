@@ -1,6 +1,5 @@
 from django.db import models
 from django.contrib.auth.models import User
-from django.utils.html import format_html
 
 
 
@@ -15,16 +14,7 @@ class Event(models.Model):
     usuario = models.ForeignKey(User, on_delete=models.DO_NOTHING)
     
 
-    def get_horarios(self, obj):
-        show_horarios = ''
-
-        horarios = EventDates.objects.filter(evento_id = obj.id)
-
-        
-        
-        for horario in horarios:
-            show_horarios = show_horarios + f"Dia {horario.start_date.date()} das {horario.start_date.time()} até {horario.end_date.time()}; <br />"
-        return format_html(show_horarios)
+    
 
 
 
