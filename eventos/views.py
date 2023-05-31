@@ -3,17 +3,18 @@ from .models import Event, EventDates
 from django.contrib.auth.decorators import login_required
 from datetime import datetime
 from django.contrib.auth.models import User
+from django.core import serializers
+
 
 
 # Create your views here.
-#@login_required
+@login_required
 def cadastro_eventos(request):
     curr_user = request.user
 
     if request.method == "POST":
         response = request.POST
 
-        print(response)
 
         try:
             if (response['meia']):
@@ -58,7 +59,7 @@ def cadastro_eventos(request):
         if int(number_of_dates) > 0:
             for i in range(0, number_of_dates):
                 if response['date_{}'.format(i)]:
-                    date_obj = datetime.strptime(response['data_{}'.format(i)], '%Y-%m-%d')
+                    date_obj = datetime.strptime(response['date_{}'.format(i)], '%d/%M/%Y')
 
                     start_time_obj = datetime.strptime(response['start_time_{}'.format(i)], '%H:%M').time()
                     
@@ -68,12 +69,14 @@ def cadastro_eventos(request):
                         evento=event,
                         start_date=datetime.combine(date_obj, start_time_obj),
                         end_date=datetime.combine(date_obj, end_time_obj),
-                        uso=response['tipo_{}'.format(i)]
+                        uso=response['type_{}'.format(i)]
                     )
 
                     date_event.save()
+
+                    print(date_event)
         else:
-            date_obj = datetime.strptime(response['data_0'], '%Y-%m-%d')
+            date_obj = datetime.strptime(response['date_0'], '%d/%M/%Y')
 
             start_time_obj = datetime.strptime(response['start_time_0'], '%H:%M').time()
                     
@@ -83,12 +86,17 @@ def cadastro_eventos(request):
                     evento=event,
                     start_date=datetime.combine(date_obj, start_time_obj),
                     end_date=datetime.combine(date_obj, end_time_obj),
-                    uso=response['tipo_0']
+                    uso=response['type_0']
                 )
 
             date_event.save()
 
-    return render(request, 'cadastroEvento.html')
+        return render(request, 'cadastroEvento.html')
+    else:
+        all_dates = EventDates.objects.all()
+        return render(request, 'cadastroEvento.html', {'all_dates': serializers.serialize('json', all_dates)})
+
+    
 
 
 def eventos(request):

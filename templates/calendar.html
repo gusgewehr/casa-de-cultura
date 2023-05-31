@@ -128,7 +128,8 @@
 
 					<div class="mb-4">
 						<label class="text-gray-800 block mb-1 font-bold text-sm tracking-wide">Intenção de uso</label>
-						<select name="tipo" @change="date_type = $event.target.value;" class="block w-full rounded-md border-0 px-3.5 py-2 pl-4 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" x-model="date_type">
+						<select  name="tipo" @change="date_type = $event.target.value;" class="block w-full rounded-md border-0 px-3.5 py-2 pl-4 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" x-model="date_type">
+							<option value="" disabled selected>Selecione a sua intenção de uso</option>
 							<option value="AP">Apresentação</option>
 							<option value="EN">Ensaio</option>
 							<option value="MNT">Montagem do Palco</option>                
@@ -187,35 +188,13 @@
 						event_theme: 'green'
 					}
 				],
+				event_date_id: '',
 				event_title: 'Seu evento',
 				start_time: '',
 				event_date: '',
 				end_time: '',
-				date_type: '',
+				date_type: 'AP',
 				event_theme: 'blue',
-
-				themes: [
-					{
-						value: "blue",
-						label: "Blue Theme"
-					},
-					{
-						value: "red",
-						label: "Red Theme"
-					},
-					{
-						value: "yellow",
-						label: "Yellow Theme"
-					},
-					{
-						value: "green",
-						label: "Green Theme"
-					},
-					{
-						value: "purple",
-						label: "Purple Theme"
-					}
-				],
 
 				openEventModal: false,
 
@@ -280,7 +259,6 @@
 
 				addEvent() {
 
-					console.log(this.start_time)
 					if (this.event_title == '') {
 						return;
 					}
@@ -294,8 +272,7 @@
 						event_theme: this.event_theme
 					});
 
-					console.log(this.events);
-					add_date(eventDate, this.start_time, this.end_time, this.date_type)
+					add_date(this.event_date, this.start_time, this.end_time, this.date_type)
 
 					// clear the form data
 					this.event_date = '';
