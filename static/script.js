@@ -104,3 +104,29 @@ function free_event_check(){
         document.getElementById("comunitario").disabled = false
     }
 }
+
+function imagePreview() {
+    const pictureImage = document.querySelector(".picture__image");
+
+    const inputFile = document.querySelector("#picture__input");
+    const file = inputFile.files[0];
+
+    if (file) {
+        const reader = new FileReader();
+
+        reader.addEventListener("load", function (reader) {
+            const readerTarget = reader.target;
+
+            const img = document.createElement("img");
+            img.src = readerTarget.result;
+            img.classList.add("picture__img");
+
+            pictureImage.innerHTML = "";
+            pictureImage.appendChild(img);
+        });
+
+        reader.readAsDataURL(file);
+    } else {
+        pictureImage.innerHTML = "Escolha uma imagem para o banner";
+    }
+}
