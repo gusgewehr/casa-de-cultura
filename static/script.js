@@ -7,6 +7,7 @@ window.addEventListener("load", function(e){
 
 
 number_of_dates = 0
+number_of_images = 0
 dates_list = []
 
 function update_number_of_dates() {
@@ -128,5 +129,42 @@ function imagePreview() {
         reader.readAsDataURL(file);
     } else {
         pictureImage.innerHTML = "Escolha uma imagem para o banner";
+    }
+}
+
+function horizontalScroll (event) {
+    event.preventDefault();
+
+    const element = document.querySelector("#event-images");
+    element.scrollBy({
+      left: event.deltaY < 0 ? -50 : 50,
+    })
+
+}
+
+
+function imageAddEvents() {
+    const eventImages = document.querySelector("#event-images");
+
+    const inputFile = document.querySelector("#pictures_event_input");
+    const file = inputFile.files[0];
+
+    if (file) {
+        const reader = new FileReader();
+
+        reader.addEventListener("load", function (reader) {
+            const readerTarget = reader.target;
+
+            const img = document.createElement("img");
+            img.setAttribute("class", "block max-h-full p-1")
+
+            img.src = readerTarget.result;
+
+            eventImages.append(img);
+        });
+
+        reader.readAsDataURL(file);
+    } else {
+        pictureImage.innerHTML = "Escolha outras imagens para o evento";
     }
 }

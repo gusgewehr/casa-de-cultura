@@ -4,7 +4,8 @@
             <span class="picture__image">Escolha uma imagem para o banner</span>
         </label>
 
-        <input required type="file" name="picture__input" id="picture__input" onchange="imagePreview()">
+        <input required type="file" name="picture__input" id="picture__input" accept="image/png, image/jpeg, image/jpg"
+            onchange="imagePreview()">
     </div>
     <div class="flex justify-center">
         <textarea id="message" rows="4"
@@ -14,71 +15,16 @@
 </div>
 
 
-<div class="banner-image grid grid-cols-1 md:grid-cols-2 gap-6">
-    <div class="flex justify-center">
-        <h1>Aqui vai ficar o botão lá</h1>
+<div class="grid grid-cols-1 md:grid-cols-3">
+    <div class="flex h-48">
+        <label class="picture" for="pictures_event_input" tabIndex="0">
+            <span class="picture_event">Escolha outras imagens para o evento</span>
+        </label>
+
+        <input required type="file" name="pictures_event_input" id="pictures_event_input"
+            accept="image/png, image/jpeg, image/jpg" onchange="imageAddEvents()">
     </div>
-    <div class="flex justify-center">
-        <div class="relative w-full overflow-hidden after:clear-both after:block after:content-['']">
-            <!-- First item -->
-            <div class="relative float-left -mr-[100%] w-full !transform-none opacity-0 transition-opacity duration-[600ms] ease-in-out motion-reduce:transition-none"
-                data-te-carousel-fade data-te-carousel-item data-te-carousel-active>
-                <img src="https://mdbcdn.b-cdn.net/img/Photos/Slides/img%20(19).webp" class="block w-full"
-                    alt="Motorbike Smoke" />
-                <div class="absolute inset-x-[15%] bottom-5 py-5 text-black bg-gray-400 bg-opacity-80 rounded-lg">
-                    <div class="mr-4 ml-4">
-                        <h3 class="text-xl font-black text-center">Nome do Evento</h3>
-                        <p class="text-justify mt-2 hidden md:block">
-                            Descrição, descrição, descrição, descrição, descrição, descrição, descrição, descrição,
-                            descrição, descrição, descrição, descrição, descrição, descrição, descrição,
-                            descrição, descrição, descrição, descrição, descrição, descrição, descrição,
-                            descrição, descrição, descrição, descrição, descrição, descrição, descrição,
-                            descrição, descrição, descrição, descrição, descrição, descrição, descrição,
-                            descrição, descrição, descrição, descrição, descrição, descrição, descrição, (200
-                            caracteres)
-                        </p>
-                        <p class="italic mt-2">10 de Janeiro de 2023, Ingresso: Gratuito</p>
-                    </div>
-                </div>
-            </div>
-            <div class="relative float-left -mr-[100%] hidden w-full !transform-none opacity-0 transition-opacity duration-[600ms] ease-in-out motion-reduce:transition-none"
-                data-te-carousel-fade data-te-carousel-item>
-                <img src="https://mdbcdn.b-cdn.net/img/Photos/Slides/img%20(35).webp" class="block w-full"
-                    alt="Mountaintop" />
-                <div class="absolute inset-x-[15%] bottom-5 py-5 text-black bg-gray-400 bg-opacity-80 rounded-lg">
-                    <div class="mr-4 ml-4">
-                        <h3 class="text-xl font-black text-center">Nome do Evento</h3>
-                        <p class="text-justify mt-2 hidden md:block">
-                            Descrição, descrição, descrição, descrição, descrição, descrição, descrição, descrição,
-                            descrição, descrição, descrição, descrição, descrição, descrição, descrição,
-                            descrição, descrição, descrição, descrição, descrição, descrição, descrição,
-                            descrição, descrição, descrição, descrição, descrição, descrição, descrição, (200
-                            caracteres)
-                        </p>
-                        <p class="italic mt-2">10 de Janeiro de 2023, Ingresso: R$40,00</p>
-                    </div>
-                </div>
-            </div>
-            <div class="relative float-left -mr-[100%] hidden w-full !transform-none opacity-0 transition-opacity duration-[600ms] ease-in-out motion-reduce:transition-none"
-                data-te-carousel-fade data-te-carousel-item>
-                <img src="https://mdbcdn.b-cdn.net/img/Photos/Slides/img%20(40).webp" class="block w-full"
-                    alt="Woman Reading a Book" />
-                <div class="absolute inset-x-[15%] bottom-5 py-5 text-black bg-gray-400 bg-opacity-80 rounded-lg">
-                    <div class="mr-4 ml-4">
-                        <h3 class="text-xl font-black text-center">Nome do Evento</h3>
-                        <p class="text-justify mt-2 hidden md:block">
-                            Descrição, descrição, descrição, descrição, descrição, descrição, descrição, descrição,
-                            descrição, descrição, descrição, descrição, descrição, descrição, descrição,
-                            descrição, descrição, descrição, descrição, descrição, descrição, descrição,
-                            descrição, descrição, descrição, descrição, descrição, descrição, descrição,
-                            descrição, descrição, descrição, descrição, descrição, descrição, descrição,
-                            descrição, descrição, descrição, descrição, descrição, descrição, descrição, (200
-                            caracteres)
-                        </p>
-                        <p class="italic mt-2">10 de Janeiro de 2023, Ingresso: R$20,00</p>
-                    </div>
-                </div>
-            </div>
-        </div>
+    <div id="event-images" class="flex col-span-2 auto-cols-max overflow-y-hidden h-48 md:ml-3 border border-gray-300"
+        onwheel="horizontalScroll(event)">
     </div>
 </div>
