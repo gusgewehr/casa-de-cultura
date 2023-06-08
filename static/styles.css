@@ -8,6 +8,7 @@
 *::-webkit-scrollbar {
   width: 7px;
 }
+
 *::-webkit-scrollbar-track {
   border-radius: 5px;
   background-color: #DFE9EB;
@@ -33,12 +34,13 @@
 *::-webkit-scrollbar-thumb:active {
   background-color: #6366F1;
 }
+
 #picture__input {
   display: none;
 }
 
 .picture {
-  width: 400px;
+  width: 100%;
   aspect-ratio: 16/9;
   background: #ddd;
   display: flex;

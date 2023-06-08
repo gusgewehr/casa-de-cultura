@@ -1,12 +1,12 @@
-<div class="flex flex-row">
-    <div class="sm:basis-1 md:basis-4/12">
+<div class="banner-image grid grid-cols-1 md:grid-cols-2 gap-6">
+    <div class="flex justify-center">
         <label class="picture" for="picture__input" tabIndex="0">
             <span class="picture__image">Escolha uma imagem para o banner</span>
         </label>
 
         <input required type="file" name="picture__input" id="picture__input" onchange="imagePreview()">
     </div>
-    <div class="sm:basis-1 md:basis-6/12 md:ml-3">
+    <div class="flex justify-center">
         <textarea id="message" rows="4"
             class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 min-h-full resize-none"
             placeholder="Descrição da imagem"></textarea>
