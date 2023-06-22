@@ -29,3 +29,10 @@ class EventDates(models.Model):
         ("DMNT","Desmontagem do Palco"),
     )
     uso = models.CharField(max_length=5, choices=type_choices, default="AP")
+
+
+class EventImages(models.Model):
+    evento = models.ForeignKey(Event, on_delete = models.CASCADE)
+    image = models.ImageField()
+    is_cover = models.BooleanField(default=False)
+    
