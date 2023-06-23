@@ -16,8 +16,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import include, path
-from eventos.views import cadastro_eventos
-from eventos.views import eventos
+from eventos.views import cadastro_eventos, eventos, evento, meusEventos
 from django.conf import settings
 from django.conf.urls.static import static
 
@@ -28,7 +27,9 @@ urlpatterns = [
     path("home", eventos),
     path("cadastro-eventos", cadastro_eventos),
     path("accounts/", include("django.contrib.auth.urls")),
+    path("meus-eventos", meusEventos),
     path("admin", admin.site.urls),
+    path("evento/<int:id>", evento, name='evento'),
 ]
 
 if settings.DEBUG:

@@ -6,7 +6,6 @@ from django.contrib.auth.models import User
 from django.core import serializers
 
 
-
 # Create your views here.
 @login_required
 def cadastro_eventos(request):
@@ -15,13 +14,12 @@ def cadastro_eventos(request):
     if request.method == "POST":
         response = request.POST
 
-
         try:
             if (response['meia']):
                 meia = True
         except:
             meia = False
-        
+
         try:
             if (response['comunitario']):
                 comunitario = True
@@ -33,7 +31,7 @@ def cadastro_eventos(request):
                 gratuito = True
         except:
             gratuito = False
-        
+
         try:
             preco = response['preco']
             if preco == '':
@@ -41,7 +39,6 @@ def cadastro_eventos(request):
         except:
             preco = 0
 
-        
         try:
             event = Event(
                 nome=response['nome'],
@@ -59,15 +56,19 @@ def cadastro_eventos(request):
             if int(number_of_dates) > 0:
                 for i in range(0, number_of_dates):
                     if response['date_{}'.format(i)]:
-                        date_obj = datetime.strptime(response['date_{}'.format(i)], '%d/%M/%Y')
+                        date_obj = datetime.strptime(
+                            response['date_{}'.format(i)], '%d/%M/%Y')
 
-                        start_time_obj = datetime.strptime(response['start_time_{}'.format(i)], '%H:%M').time()
-                        
-                        end_time_obj = datetime.strptime(response['end_time_{}'.format(i)], '%H:%M').time()
+                        start_time_obj = datetime.strptime(
+                            response['start_time_{}'.format(i)], '%H:%M').time()
+
+                        end_time_obj = datetime.strptime(
+                            response['end_time_{}'.format(i)], '%H:%M').time()
 
                         date_event = EventDates(
                             evento=event,
-                            start_date=datetime.combine(date_obj, start_time_obj),
+                            start_date=datetime.combine(
+                                date_obj, start_time_obj),
                             end_date=datetime.combine(date_obj, end_time_obj),
                             uso=response['type_{}'.format(i)]
                         )
@@ -78,16 +79,18 @@ def cadastro_eventos(request):
             else:
                 date_obj = datetime.strptime(response['date_0'], '%d/%M/%Y')
 
-                start_time_obj = datetime.strptime(response['start_time_0'], '%H:%M').time()
-                        
-                end_time_obj = datetime.strptime(response['end_time_0'], '%H:%M').time()
+                start_time_obj = datetime.strptime(
+                    response['start_time_0'], '%H:%M').time()
+
+                end_time_obj = datetime.strptime(
+                    response['end_time_0'], '%H:%M').time()
 
                 date_event = EventDates(
-                        evento=event,
-                        start_date=datetime.combine(date_obj, start_time_obj),
-                        end_date=datetime.combine(date_obj, end_time_obj),
-                        uso=response['type_0']
-                    )
+                    evento=event,
+                    start_date=datetime.combine(date_obj, start_time_obj),
+                    end_date=datetime.combine(date_obj, end_time_obj),
+                    uso=response['type_0']
+                )
 
                 date_event.save()
             return render(request, 'cadastroEvento.html', {"post_status": True, 'status': True})
@@ -97,8 +100,26 @@ def cadastro_eventos(request):
         all_dates = EventDates.objects.all()
         return render(request, 'cadastroEvento.html', {'all_dates': serializers.serialize('json', all_dates)})
 
-    
-
 
 def eventos(request):
+    return render(request, 'index.html')
+
+
+@login_required
+def meusEventos(request):
+
+    event_date = EventDates.objects.all()
+
+    event_list = Event.objects.all().filter(
+        usuario=request.user)
+
+    context = {
+        'events': event_list,
+        'dates': event_date,
+    }
+
+    return render(request, 'myEvents.html', context)
+
+
+def evento(request, id):
     return render(request, 'index.html')

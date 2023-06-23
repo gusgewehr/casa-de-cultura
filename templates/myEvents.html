@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+
+{% block title %}Casa de Cultura - Meus Eventos{% endblock title %}
+
+{% block content %}
+
+
+<div class="relative overflow-x-auto shadow-md sm:rounded-lg px-6">
+    <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+        <thead class="text-xs text-gray-700 uppercase dark:text-gray-400">
+            <tr>
+                <th scope="col" class="px-6 py-3">
+                    Nome
+                </th>
+                <th scope="col" class="px-6 py-3">
+                    Data
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for date in dates %}
+
+            <tr class="border-b border-gray-200 dark:border-gray-700">
+                <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
+                    <a href="{% url 'evento' date.evento.id %}">
+                        {{date.evento.nome}}
+                    </a>
+                </th>
+                <td class="px-6 py-4">
+                    {{date.start_date}}
+                </td>
+            </tr>
+            {% endfor %}
+
+        </tbody>
+    </table>
+</div>
+
+<!-- 
+<div class="flex justify-center">
+    <table class="w-full text-sm text-left dark:text-gray-400">
+        <thead class="text-xs uppercase dark:text-gray-400">
+            <tr>
+                <th scope="col" class="px-6 py-3">
+                    Nome
+                </th>
+                <th scope="col" class="px-6 py-3">
+                    Data
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <th scope="row" class="px-6 py-4 font-medium whitespace-nowrap dark:text-white">
+                <td></td>
+                </th>
+                <td class="px-6 py-4">
+                <td>{{event.data}}</td>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div> -->
+
+{% endblock content %}
