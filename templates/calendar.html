@@ -60,12 +60,12 @@
 							></div>
 						</template>	
 						<template x-for="(date, dateIndex) in no_of_days" :key="dateIndex">	
-							<div style="width: 14.28%; height: 120px" class="px-4 pt-2 border-r border-b relative">
+							<div style="width: 14.28%; height: 120px" class="px-4 pt-2 border-r border-b relative hover:bg-blue-200 cursor-pointer "
+							@click="showEventModal(date)">
 								<div
-									@click="showEventModal(date)"
 									x-text="date"
-									class="inline-flex w-6 h-6 items-center justify-center cursor-pointer text-center leading-none rounded-full transition ease-in-out duration-100"
-									:class="{'bg-blue-500 text-white': isToday(date) == true, 'text-gray-700 hover:bg-blue-200': isToday(date) == false }"	
+									class="inline-flex w-6 h-6 items-center justify-center text-center leading-none rounded-full transition ease-in-out duration-100"
+									:class="{'bg-blue-500 text-white': isToday(date) == true, 'text-gray-700 ': isToday(date) == false }"	
 								></div>
 								<div style="height: 80px;" class="overflow-y-auto mt-1">
 									<!-- <div 
