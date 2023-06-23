@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from .models import Event, EventDates
 from django.contrib.auth.decorators import login_required
 from datetime import datetime
@@ -122,4 +122,13 @@ def meusEventos(request):
 
 
 def evento(request, id):
-    return render(request, 'index.html')
+    event = get_object_or_404(Event, pk=id)
+    date = EventDates.objects.order_by(
+        '-start_date').filter(evento=event).first()
+
+    context = {
+        'event': event,
+        'date': date,
+        'url': {'url': 'https://images.unsplash.com/photo-1575936123452-b67c3203c357?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8aW1hZ2V8ZW58MHx8MHx8fDA%3D&w=1000&q=80'}
+    }
+    return render(request, 'evento.html', context)
