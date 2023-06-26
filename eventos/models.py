@@ -1,3 +1,4 @@
+from datetime import timezone
 from django.db import models
 from django.contrib.auth.models import User
 
@@ -12,10 +13,20 @@ class Event(models.Model):
     ingresso_meia = models.BooleanField(default=False)
     ingresso_comunitario = models.BooleanField(default=False)
     usuario = models.ForeignKey(User, on_delete=models.DO_NOTHING)
+    aprovado = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.nome
     
 
     
 
+def images_dir(instance, filename):
+    date = timezone.now()
+    month = date.month
+    if month < 10:
+        month = '0' + str(month)
+    return f'/imagens_eventos/{date.year}/{month}/{date.day}/{instance.evento.nome}/{filename}'
 
 
 class EventDates(models.Model):
@@ -29,6 +40,9 @@ class EventDates(models.Model):
         ("DMNT","Desmontagem do Palco"),
     )
     uso = models.CharField(max_length=5, choices=type_choices, default="AP")
+
+    def __str__(self):
+        return self.evento.nome + " " + str(self.start_date)
 
 
 class EventImages(models.Model):

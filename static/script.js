@@ -144,27 +144,35 @@ function horizontalScroll (event) {
 
 
 function imageAddEvents() {
-    const eventImages = document.querySelector("#event-images");
+    
+    var eventImages = document.querySelector("#event-images");
+    
+    var inputFile = document.querySelector("#pictures_event_input");
 
-    const inputFile = document.querySelector("#pictures_event_input");
-    const file = inputFile.files[0];
+    
+    eventImages.innerHTML = '';
 
-    if (file) {
-        const reader = new FileReader();
+    for(var i = 0; i< inputFile.files.length ; i++) {
+        file = inputFile.files[i]        
 
-        reader.addEventListener("load", function (reader) {
-            const readerTarget = reader.target;
+        if (file) {
+            const reader = new FileReader();
+    
+            reader.addEventListener("load", function (reader) {
+                const readerTarget = reader.target;
+    
+                const img = document.createElement("img");
+                img.setAttribute("class", "block max-h-full p-1")
+    
+                img.src = readerTarget.result;
+    
+                eventImages.append(img); 
+            });
+    
+            reader.readAsDataURL(file);
+        } else {
+            pictureImage.innerHTML = "Escolha outras imagens para o evento (você pode selecionar mais de uma imagem de uma vez)";
+        }
+    };
 
-            const img = document.createElement("img");
-            img.setAttribute("class", "block max-h-full p-1")
-
-            img.src = readerTarget.result;
-
-            eventImages.append(img);
-        });
-
-        reader.readAsDataURL(file);
-    } else {
-        pictureImage.innerHTML = "Escolha outras imagens para o evento";
-    }
 }

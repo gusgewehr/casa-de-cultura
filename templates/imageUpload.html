@@ -18,11 +18,14 @@
 <div class="grid grid-cols-1 md:grid-cols-3">
     <div class="flex h-48">
         <label class="picture" for="pictures_event_input" tabIndex="0">
-            <span class="picture_event">Escolha outras imagens para o evento</span>
+            <span class="picture_event">Escolha outras imagens para o evento 
+            </br>
+                <span style="font-size: 10px;">(você pode selecionar várias imagens de uma só vez)</span>
+            </span>
         </label>
 
-        <input required type="file" name="pictures_event_input" id="pictures_event_input"
-            accept="image/png, image/jpeg, image/jpg" onchange="imageAddEvents()">
+        <input type="file" name="pictures_event_input" id="pictures_event_input"
+            accept="image/png, image/jpeg, image/jpg" onchange="imageAddEvents()" multiple>
     </div>
     <div id="event-images" class="flex col-span-2 auto-cols-max overflow-y-hidden h-48 md:ml-3 border border-gray-300"
         onwheel="horizontalScroll(event)">

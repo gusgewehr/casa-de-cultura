@@ -1,10 +1,21 @@
 from django.contrib import admin
-from .models import Event, EventDates
+from .models import Event, EventDates, EventImages
 from django.utils.html import format_html
 import datetime
 
 
+
+class EventDatesInline(admin.TabularInline):
+    model = EventDates
+    extra = 0
+
+class EventImagesInline(admin.TabularInline):
+    model = EventImages
+    extra = 0
+
+
 # Register your models here.
+@admin.register(Event)
 class EventAdmin(admin.ModelAdmin):
     list_display = ['nome', 'get_horarios','usuario',]
 
@@ -22,5 +33,4 @@ class EventAdmin(admin.ModelAdmin):
             show_horarios = show_horarios + f"Dia {data} das {inicio} até {fim} <br />"
         return format_html(show_horarios)
 
-
-admin.site.register(Event, EventAdmin)
+    inlines = [EventDatesInline, EventImagesInline]
