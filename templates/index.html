@@ -2,79 +2,252 @@
 
 {% block title %}Casa de Cultura - Eventos{% endblock title %}
 
+{% block head %}
+<style>
+    .carousel {
+        display: block;
+        text-align: left;
+        position: relative;
+        margin-bottom: 22px;
+    }
+
+    .carousel>input {
+        clip: rect(1px, 1px, 1px, 1px);
+        clip-path: inset(50%);
+        height: 1px;
+        width: 1px;
+        margin: -1px;
+        overflow: hidden;
+        padding: 0;
+        position: absolute;
+    }
+
+    .carousel>input:nth-of-type(6):checked~.carousel__slides .carousel__slide:first-of-type {
+        margin-left: -500%;
+    }
+
+    .carousel>input:nth-of-type(5):checked~.carousel__slides .carousel__slide:first-of-type {
+        margin-left: -400%;
+    }
+
+    .carousel>input:nth-of-type(4):checked~.carousel__slides .carousel__slide:first-of-type {
+        margin-left: -300%;
+    }
+
+    .carousel>input:nth-of-type(3):checked~.carousel__slides .carousel__slide:first-of-type {
+        margin-left: -200%;
+    }
+
+    .carousel>input:nth-of-type(2):checked~.carousel__slides .carousel__slide:first-of-type {
+        margin-left: -100%;
+    }
+
+    .carousel>input:nth-of-type(1):checked~.carousel__slides .carousel__slide:first-of-type {
+        margin-left: 0%;
+    }
+
+    .carousel>input:nth-of-type(1):checked~.carousel__thumbnails li:nth-of-type(1) {
+        box-shadow: 0px 0px 0px 5px rgba(0, 0, 255, 0.5);
+    }
+
+    .carousel>input:nth-of-type(2):checked~.carousel__thumbnails li:nth-of-type(2) {
+        box-shadow: 0px 0px 0px 5px rgba(0, 0, 255, 0.5);
+    }
+
+    .carousel>input:nth-of-type(3):checked~.carousel__thumbnails li:nth-of-type(3) {
+        box-shadow: 0px 0px 0px 5px rgba(0, 0, 255, 0.5);
+    }
+
+    .carousel>input:nth-of-type(4):checked~.carousel__thumbnails li:nth-of-type(4) {
+        box-shadow: 0px 0px 0px 5px rgba(0, 0, 255, 0.5);
+    }
+
+    .carousel>input:nth-of-type(5):checked~.carousel__thumbnails li:nth-of-type(5) {
+        box-shadow: 0px 0px 0px 5px rgba(0, 0, 255, 0.5);
+    }
+
+    .carousel>input:nth-of-type(6):checked~.carousel__thumbnails li:nth-of-type(6) {
+        box-shadow: 0px 0px 0px 5px rgba(0, 0, 255, 0.5);
+    }
+
+    .carousel__slides {
+        position: relative;
+        z-index: 1;
+        padding: 0;
+        margin: 0;
+        overflow: hidden;
+        white-space: nowrap;
+        box-sizing: border-box;
+        display: flex;
+    }
+
+    .carousel__slide {
+        position: relative;
+        display: block;
+        flex: 1 0 100%;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        transition: all 300ms ease-out;
+        vertical-align: top;
+        box-sizing: border-box;
+        white-space: normal;
+    }
+
+    .carousel__slide figure {
+        display: flex;
+        margin: 0;
+    }
+
+    .carousel__slide div {
+        position: relative;
+        width: 100%;
+    }
+
+    .carousel__slide div:before {
+        display: block;
+        content: "";
+        width: 100%;
+        padding-top: 50.6666666667%;
+    }
+
+    .carousel__slide div>img {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        width: 100%;
+        height: 100%;
+    }
+
+    .carousel__slide img {
+        display: block;
+        flex: 1 1 auto;
+        object-fit: cover;
+        max-width: 1280px;
+        max-height: 720px;
+    }
+
+    .carousel__slide figcaption {
+        align-self: flex-end;
+        padding: 20px 20px 0 20px;
+        flex: 0 0 auto;
+        width: 40%;
+        min-width: 150px;
+    }
+
+    .carousel__slide .credit {
+        margin-top: 1rem;
+        color: rgba(0, 0, 0, 0.5);
+        display: block;
+    }
+
+    .carousel__slide.scrollable {
+        overflow-y: scroll;
+    }
+
+    .carousel__thumbnails {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: flex;
+        margin: 0 -10px;
+    }
+
+    .carousel__slides+.carousel__thumbnails {
+        margin-top: 20px;
+    }
+
+    .carousel__thumbnails li {
+        flex: 1 1 auto;
+        max-width: calc((100% / 6) - 20px);
+        /* Altera aqui a quantidade de itens*/
+        margin: 0 10px;
+        transition: all 300ms ease-in-out;
+    }
+
+    .carousel__thumbnails label {
+        display: block;
+        position: relative;
+    }
+
+    .carousel__thumbnails label:before {
+        display: block;
+        content: "";
+        width: 100%;
+        padding-top: 100%;
+    }
+
+    .carousel__thumbnails label>img {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        width: 100%;
+        max-height: 250px;
+    }
+
+    .carousel__thumbnails label:hover,
+    .carousel__thumbnails label:focus {
+        cursor: pointer;
+    }
+
+    .carousel__thumbnails label:hover img,
+    .carousel__thumbnails label:focus img {
+        box-shadow: 0px 0px 0px 1px rgba(0, 0, 0, 0.25);
+        transition: all 300ms ease-in-out;
+    }
+
+    .carousel__thumbnails img {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+</style>
+
+{% endblock head %}
+
 {% block content %}
-
-<div id="carouselDarkVariant" class="relative" data-te-carousel-init data-te-carousel-slide>
-    <!-- Carousel indicators -->
-    <div class="absolute inset-x-0 bottom-0 z-[2] mx-[15%] mb-4 flex list-none justify-center p-0"
-        data-te-carousel-indicators>
-        {% for i in range %}
+<section class="flex justify-center">
+    <div class="container md:px-32">
+        <div class="carousel">
+            {% for i in range|slice:":6" %}
             {% if forloop.first %}
-                <button data-te-target="#carouselDarkVariant" data-te-slide-to="0" data-te-carousel-active
-                class="mx-[3px] box-content h-[3px] w-[30px] flex-initial cursor-pointer border-0 border-y-[10px] border-solid border-transparent bg-black bg-clip-padding p-0 -indent-[999px] opacity-50 transition-opacity duration-[600ms] ease-[cubic-bezier(0.25,0.1,0.25,1.0)] motion-reduce:transition-none"
-                aria-current="true" aria-label="Slide 1"></button>
+            <input type="radio" name="slides" checked="checked" id="slide-{{forloop.counter}}">
             {% else %}
-
-                <button data-te-target="#carouselDarkVariant"
-                    class="mx-[3px] box-content h-[3px] w-[30px] flex-initial cursor-pointer border-0 border-y-[10px] border-solid border-transparent bg-black bg-clip-padding p-0 -indent-[999px] opacity-50 transition-opacity duration-[600ms] ease-[cubic-bezier(0.25,0.1,0.25,1.0)] motion-reduce:transition-none"
-                    data-te-slide-to="{{ i }}" aria-label="Slide {{i}}"></button>
+            <input type="radio" name="slides" id="slide-{{forloop.counter}}">
             {% endif %}
-        {% endfor %}
+            {% endfor %}
+            <ul class="carousel__slides">
+                {% for date in dates|slice:":6" %}
+                <li class="carousel__slide">
+                    <figure>
+                        <div>
+                            <img src="{{ date.image.image.url }}" alt="">
+                        </div>
+                        <figcaption>
+                            <a href="{% url 'evento' date.event.id %}">
+                                <h4>{{ date.event.nome }}</h4>
+                            </a>
+                            {{date.event.descricao|slice:":200" }}
+                            <span class="credit">{{ date.date.start_date }},
+                                Ingresso: {{ date.event.preco_ingresso }}</span>
+                        </figcaption>
+                    </figure>
+                </li>
+                {% endfor %}
+            </ul>
+            <ul class="carousel__thumbnails">
+                {% for date in dates|slice:":6" %}
+                <li>
+                    <label for="slide-{{forloop.counter}}"><img src="{{ date.image.image.url }}" alt=""></label>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
     </div>
-
-    <!-- Carousel items -->
-    <div class="relative w-full overflow-hidden after:clear-both after:block after:content-['']">
-        <!-- First item -->
-        {% for date in dates %}
-            {% if forloop.first %}
-                <div class="relative float-left -mr-[100%] w-full !transform-none opacity-0 transition-opacity duration-[600ms] ease-in-out motion-reduce:transition-none"
-                    data-te-carousel-fade data-te-carousel-item data-te-carousel-active>
-            {% else %}
-                <div class="relative float-left -mr-[100%] w-full !transform-none opacity-0 transition-opacity duration-[600ms] ease-in-out motion-reduce:transition-none"
-                data-te-carousel-fade data-te-carousel-item >
-            {% endif %}
-                <img src="{{ date.image.image.url }}" class="items-center justify-center h-screen"
-                    alt="Motorbike Smoke" />
-                <div
-                    class="absolute inset-x-[15%] bottom-5 py-5 text-black bg-gray-400 bg-opacity-80 rounded-lg">
-                    <div class="mr-4 ml-4">
-                        <h3 class="text-xl font-black text-center">{{ date.event.nome }}</h3>
-                        <p class="text-justify mt-2 hidden md:block">
-                            {{date.event.descricao }}
-                        </p>
-                        <p class="italic mt-2">{{ date.date.start_date }}, {{ date.event.preco_ingresso }}</p>
-                    </div>
-                </div>
-            </div>
-        {% endfor %}
-    </div>
-
-    <!-- Carousel controls - prev item-->
-    <button
-        class="absolute bottom-0 left-0 top-0 z-[1] flex w-[15%] items-center justify-center border-0 bg-none p-0 text-center text-black opacity-50 transition-opacity duration-150 ease-[cubic-bezier(0.25,0.1,0.25,1.0)] hover:text-black hover:no-underline hover:opacity-90 hover:outline-none focus:text-black focus:no-underline focus:opacity-90 focus:outline-none motion-reduce:transition-none"
-        type="button" data-te-target="#carouselDarkVariant" data-te-slide="prev">
-        <span class="inline-block h-8 w-8 dark:grayscale">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                stroke="currentColor" class="h-6 w-6">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
-            </svg>
-        </span>
-        <span
-            class="!absolute !-m-px !h-px !w-px !overflow-hidden !whitespace-nowrap !border-0 !p-0 ![clip:rect(0,0,0,0)]">Previous</span>
-    </button>
-    <!-- Carousel controls - next item-->
-    <button
-        class="absolute bottom-0 right-0 top-0 z-[1] flex w-[15%] items-center justify-center border-0 bg-none p-0 text-center text-black opacity-50 transition-opacity duration-150 ease-[cubic-bezier(0.25,0.1,0.25,1.0)] hover:text-black hover:no-underline hover:opacity-90 hover:outline-none focus:text-black focus:no-underline focus:opacity-90 focus:outline-none motion-reduce:transition-none"
-        type="button" data-te-target="#carouselDarkVariant" data-te-slide="next">
-        <span class="inline-block h-8 w-8 dark:grayscale">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                stroke="currentColor" class="h-6 w-6">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
-            </svg>
-        </span>
-        <span
-            class="!absolute !-m-px !h-px !w-px !overflow-hidden !whitespace-nowrap !border-0 !p-0 ![clip:rect(0,0,0,0)]">Next</span>
-    </button>
-</div>
-
+</section>
 {% endblock content %}
