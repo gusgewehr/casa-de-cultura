@@ -190,8 +190,8 @@ def eventos(request):
         'range': range(len(dict))
         }
 
+    #return render(request, 'index_old.html', context)
     return render(request, 'index.html', context)
-
 
 @login_required
 def meusEventos(request):

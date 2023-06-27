@@ -230,7 +230,7 @@
                         </div>
                         <figcaption>
                             <a href="{% url 'evento' date.event.id %}">
-                                <h4>{{ date.event.nome }}</h4>
+                                <h4 class="text-4xl font-bold">{{ date.event.nome }}</h4>
                             </a>
                             {{date.event.descricao|slice:":200" }}
                             <span class="credit">{{ date.date.start_date }},
