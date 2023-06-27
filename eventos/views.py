@@ -22,13 +22,11 @@ def images_dir(instance, filename):
 
 @login_required
 def cadastro_eventos(request):
-    
 
     curr_user = request.user
 
     if request.method == "POST":
         response = request.POST
-
 
         print(response)
 
@@ -112,14 +110,13 @@ def cadastro_eventos(request):
                 )
 
                 date_event.save()
-            
 
             fss = FileSystemStorage()
             file = request.FILES['picture__input']
             event_image = EventImages(
-                evento = event,
-                image = fss.save(images_dir(event, file.name), file),
-                is_cover = True
+                evento=event,
+                image=fss.save(images_dir(event, file.name), file),
+                is_cover=True
             )
 
             event_image.save()
@@ -130,21 +127,18 @@ def cadastro_eventos(request):
             except:
                 image_list = False
 
-                    
-            if(image_list):
-                fss2 = FileSystemStorage()    
+            if (image_list):
+                fss2 = FileSystemStorage()
                 for f in request.FILES.getlist('pictures_event_input'):
                     event_image_from_list = EventImages(
-                        evento = event,
-                        image = fss2.save(images_dir(event, f.name), f),
-                        is_cover = False
+                        evento=event,
+                        image=fss2.save(images_dir(event, f.name), f),
+                        is_cover=False
                     )
                     event_image_from_list.save()
 
-
-
             return render(request, 'cadastroEvento.html', {"post_status": True, 'status': True})
-        except  Exception as err:
+        except Exception as err:
             event.delete()
             print('erro:  '+str(err))
             return render(request, 'cadastroEvento.html', {"post_status": True, 'status': False})
@@ -154,14 +148,15 @@ def cadastro_eventos(request):
 
 
 def eventos(request):
-    events = Event.objects.filter(aprovado = True) 
+    events = Event.objects.filter(aprovado=True)
     event_dates = EventDates.objects.filter(
-        uso = "AP", 
-        evento__in = events,
-        start_date__gte = datetime.now()
-        
-        ).distinct().order_by('start_date')
-    images = EventImages.objects.filter(is_cover = True, evento__in = events).distinct()
+        uso="AP",
+        evento__in=events,
+        start_date__gte=datetime.now()
+
+    ).distinct().order_by('start_date')
+    images = EventImages.objects.filter(
+        is_cover=True, evento__in=events).distinct()
 
     dict = []
     for date in event_dates:
@@ -178,7 +173,7 @@ def eventos(request):
             else:
                 image = None
 
-        dict.append( {
+        dict.append({
             'event': evento,
             'date': date,
             'image': image
@@ -188,7 +183,7 @@ def eventos(request):
         'dates': dict,
         'images': images,
         'range': range(len(dict))
-        }
+    }
 
     #return render(request, 'index_old.html', context)
     return render(request, 'index.html', context)
