@@ -97,6 +97,8 @@ function rm_date(value){
 function free_event_check(){
     if (document.getElementById("gratuito").checked) {
         document.getElementById("preco").disabled = true
+        document.getElementById("preco").value = ''
+
         document.getElementById("meia").disabled = true
         document.getElementById("comunitario").disabled = true
     } else {

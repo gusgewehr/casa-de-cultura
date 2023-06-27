@@ -4,62 +4,197 @@
 
 {% block content %}
 
+<div id="accordion" style="display: flex; flex-direction: column; gap: 50px;">
 
-<div class="relative overflow-x-auto shadow-md sm:rounded-lg px-6">
-    <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-        <thead class="text-xs text-gray-700 uppercase dark:text-gray-400">
-            <tr>
-                <th scope="col" class="px-6 py-3">
-                    Nome
-                </th>
-                <th scope="col" class="px-6 py-3">
-                    Data
-                </th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for date in dates %}
 
-            <tr class="border-b border-gray-200 dark:border-gray-700">
-                <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                    <a href="{% url 'evento' date.evento.id %}">
-                        {{date.evento.nome}}
-                    </a>
-                </th>
-                <td class="px-6 py-4">
-                    {{date.start_date}}
-                </td>
-            </tr>
-            {% endfor %}
+    
+    <div
+    id = "acordion1"
+        class="rounded-t-lg border border-neutral-200  dark:border-neutral-600 dark:bg-neutral-800">
+        <h2 class="mb-0" id="headingOne">
+            <button
+            class="group text-blue-500 bg-white bg-opacity-40 relative flex w-full items-center rounded-t-[15px] border-0 px-5 py-4 text-left text-base  transition [overflow-anchor:none] hover:z-[2] focus:z-[3] focus:outline-none dark:bg-neutral-800 dark:text-white [&:not([data-te-collapse-collapsed])]:[&:not([data-te-collapse-collapsed])]:text-primary [&:not([data-te-collapse-collapsed])]:[box-shadow:inset_0_-1px_0_rgba(229,231,235)] dark:[&:not([data-te-collapse-collapsed])]:bg-neutral-800 dark:[&:not([data-te-collapse-collapsed])]:text-primary-400 dark:[&:not([data-te-collapse-collapsed])]:[box-shadow:inset_0_-1px_0_rgba(75,85,99)]"
+            type="button"
+            data-te-collapse-init
+            data-te-target="#collapseOne"
+            aria-expanded="true"
+            aria-controls="collapseOne">
+            Eventos Futuros
+            <span
+            class="ml-auto h-5 w-5 shrink-0 rotate-[-180deg] fill-[#336dec] transition-transform duration-200 ease-in-out group-[[data-te-collapse-collapsed]]:rotate-0 group-[[data-te-collapse-collapsed]]:fill-[#212529] motion-reduce:transition-none dark:fill-blue-300 dark:group-[[data-te-collapse-collapsed]]:fill-white">
+            <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width="1.5"
+                stroke="currentColor"
+                class="h-6 w-6">
+                <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+            </svg>
+            </span>
+        </button>
+        </h2>
+        <div id="collapseOne"
+        data-te-collapse-item
+        data-te-collapse-show
+        aria-labelledby="headingOne"
+        data-te-parent="#acordion1" class="!visible relative overflow-x-auto shadow-md sm:rounded-lg px-6">
+            <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                <thead class="text-xs text-gray-700 uppercase dark:text-gray-400">
+                    <tr>
+                        <th scope="col" class="px-6 py-3">
+                            Nome
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            Data
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            Aprovado
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            Ações
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% if future_events %}
+                        {% for event in future_events %}
 
-        </tbody>
-    </table>
+                            <tr class="border-b border-gray-200 dark:border-gray-700">
+                                <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
+                                    <a href="{% url 'evento' event.event.id %}">
+                                        {{event.event.nome}}
+                                    </a>
+                                </th>
+                                
+                                <td class="flex-col px-6 py-4">
+                                    {% for date in event.dates %}
+                                        <p>
+                                            {{date.start_date}}
+                                        </p>
+                                    {% endfor %}
+                                </td>
+                                <td class="flex-col px-6 py-4">
+                                    {% if event.event.aprovado %}
+
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+                                      </svg>
+                                      
+                                      
+
+                                    {% else %}
+
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                                      </svg>
+                                      
+
+                                    {% endif %}
+
+                                </td>
+                                <td class="flex-row px-6 py-4">
+                                    <button class="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded">
+                                        Editar
+                                    </button>
+                                    <button class="bg-transparent hover:bg-red-500 text-red-700 font-semibold hover:text-white py-2 px-4 border border-red-500 hover:border-transparent rounded">
+                                        Excluir
+                                    </button>
+                                </td>
+                                
+                            </tr>
+                        {% endfor %}
+                    {% else %}
+                        <tr class="border-b border-gray-200 dark:border-gray-700">
+                            Sem eventos futuros
+                        </tr>
+                    {% endif %}     
+
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+
+    <div
+    id="acordion2"
+        class="rounded-t-lg border border-neutral-200 dark:border-neutral-600 dark:bg-neutral-800">
+        <h2 class="mb-0" id="headingOne">
+        <button
+            class="group bg-white bg-opacity-40 relative flex w-full items-center rounded-t-[15px] border-0 px-5 py-4 text-left text-base text-neutral-800 transition [overflow-anchor:none] hover:z-[2] focus:z-[3] focus:outline-none dark:bg-neutral-800 dark:text-white [&:not([data-te-collapse-collapsed])]:[&:not([data-te-collapse-collapsed])]:text-primary [&:not([data-te-collapse-collapsed])]:[box-shadow:inset_0_-1px_0_rgba(229,231,235)] dark:[&:not([data-te-collapse-collapsed])]:bg-neutral-800 dark:[&:not([data-te-collapse-collapsed])]:text-primary-400 dark:[&:not([data-te-collapse-collapsed])]:[box-shadow:inset_0_-1px_0_rgba(75,85,99)]"
+            type="button"
+            data-te-collapse-init
+            data-te-target="#eventos_passado"
+            aria-expanded="false"
+            aria-controls="eventos_passado">
+            Eventos Passados
+            <span
+            class="ml-auto h-5 w-5 shrink-0 rotate-[-180deg] fill-[#336dec] transition-transform duration-200 ease-in-out group-[[data-te-collapse-collapsed]]:rotate-0 group-[[data-te-collapse-collapsed]]:fill-[#212529] motion-reduce:transition-none dark:fill-blue-300 dark:group-[[data-te-collapse-collapsed]]:fill-white">
+            <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width="1.5"
+                stroke="currentColor"
+                class="h-6 w-6">
+                <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+            </svg>
+            </span>
+        </button>
+        </h2>
+        <div id="eventos_passado"
+        data-te-collapse-item
+        aria-labelledby="headingTwo"
+        data-te-parent="#acordion2" class="!visible hidden relative overflow-x-auto shadow-md sm:rounded-lg px-6">
+            <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                <thead class="text-xs text-gray-700 uppercase dark:text-gray-400">
+                    <tr>
+                        <th scope="col" class="px-6 py-3">
+                            Nome
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            Data
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% if past_events %}
+                        {% for event in past_events %}
+
+                            <tr class="border-b border-gray-200 dark:border-gray-700">
+                                <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
+                                    <a href="{% url 'evento' event.event.id %}">
+                                        {{event.event.nome}}
+                                    </a>
+                                </th>
+                                
+                                <td class="flex-col px-6 py-4">
+                                    {% for date in event.dates %}
+                                        <p>
+                                            {{date.start_date}}
+                                        </p>
+                                    {% endfor %}
+                                </td>
+                                
+                            </tr>
+                        {% endfor %}
+                    {% else %}
+                        <tr class="border-b border-gray-200 dark:border-gray-700">
+                            Sem eventos passados
+                        </tr>
+                    {% endif %}     
+
+                </tbody>
+            </table>
+        </div>
+
+    </div>
 </div>
-
-<!-- 
-<div class="flex justify-center">
-    <table class="w-full text-sm text-left dark:text-gray-400">
-        <thead class="text-xs uppercase dark:text-gray-400">
-            <tr>
-                <th scope="col" class="px-6 py-3">
-                    Nome
-                </th>
-                <th scope="col" class="px-6 py-3">
-                    Data
-                </th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <th scope="row" class="px-6 py-4 font-medium whitespace-nowrap dark:text-white">
-                <td></td>
-                </th>
-                <td class="px-6 py-4">
-                <td>{{event.data}}</td>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-</div> -->
-
 {% endblock content %}

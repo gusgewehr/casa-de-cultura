@@ -196,14 +196,44 @@ def eventos(request):
 @login_required
 def meusEventos(request):
 
+    events = Event.objects.filter(usuario = request.user) 
+    event__future_dates = EventDates.objects.filter(
+        evento__in = events,        
+        ).distinct().order_by('start_date')
+    #images = EventImages.objects.filter(is_cover = True, evento__in = events).distinct()
+
+    dict_future_events = []
+    dict_past_events = []
+    for event in events:
+        future_dates = []
+        past_dates = []
+        for date in event__future_dates:        
+            if date.evento == event:
+                if date.start_date > datetime.now():
+                    future_dates.append(date)
+                else:         
+                    past_dates.append(date)
+
+        if len(future_dates) >0 :
+            dict_future_events.append( {
+                'event': event,
+                'dates': future_dates+past_dates,
+            })
+        else:
+            dict_past_events.append({
+                'event': event,
+                'dates': past_dates,
+            })
+
+
     event_date = EventDates.objects.all()
 
     event_list = Event.objects.all().filter(
         usuario=request.user)
 
     context = {
-        'events': event_list,
-        'dates': event_date,
+        'future_events': dict_future_events,
+        'past_events': dict_past_events,
     }
 
     return render(request, 'myEvents.html', context)
@@ -212,11 +242,12 @@ def meusEventos(request):
 def evento(request, id):
     event = get_object_or_404(Event, pk=id)
     date = EventDates.objects.order_by(
-        '-start_date').filter(evento=event).first()
+        '-start_date').filter(evento=event)
+    images = EventImages.objects.filter(evento=event)
 
     context = {
         'event': event,
-        'date': date,
-        'url': {'url': 'https://images.unsplash.com/photo-1575936123452-b67c3203c357?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8aW1hZ2V8ZW58MHx8MHx8fDA%3D&w=1000&q=80'}
+        'dates': date,
+        'images': images
     }
     return render(request, 'evento.html', context)
