@@ -5,6 +5,23 @@ window.addEventListener("load", function(e){
 
 });
 
+function close_modal(){
+    $("#modal").attr("style", "display: none");
+}
+
+document.addEventListener(
+    "click",
+    function(event) {
+      // If user either clicks X button OR clicks outside the modal window, then close modal by calling closeModal()
+        if ( event.target.matches(".btn_close_modal") ||
+            event.target.matches(".modal")
+        ) {
+          close_modal()
+        }
+    },
+    false
+  )
+
 
 number_of_dates = 0
 number_of_images = 0

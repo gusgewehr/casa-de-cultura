@@ -41,6 +41,15 @@ class EventDates(models.Model):
     )
     uso = models.CharField(max_length=5, choices=type_choices, default="AP")
 
+    def treat_uso(self):
+        type_choices = {
+            "EN": "Ensaio",
+            "MNT":"Montagem do Palco",
+            "AP": "Apresentação",
+            "DMNT":"Desmontagem do Palco",
+        }
+        return type_choices[self.uso]
+
     def __str__(self):
         return self.evento.nome + " " + str(self.start_date)
 

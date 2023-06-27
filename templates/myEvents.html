@@ -4,13 +4,13 @@
 
 {% block content %}
 
-<div id="accordion" style="display: flex; flex-direction: column; gap: 50px;">
+<div id="accordion" class="max-w-screen-xl w-full "  style="display: flex; flex-direction: column; gap: 50px; align-items: center; justify-content: center;">
 
 
     
     <div
     id = "acordion1"
-        class="rounded-t-lg border border-neutral-200  dark:border-neutral-600 dark:bg-neutral-800">
+        class="rounded-t-lg w-full   border border-neutral-200  dark:border-neutral-600 dark:bg-neutral-800">
         <h2 class="mb-0" id="headingOne">
             <button
             class="group text-blue-500 bg-white bg-opacity-40 relative flex w-full items-center rounded-t-[15px] border-0 px-5 py-4 text-left text-base  transition [overflow-anchor:none] hover:z-[2] focus:z-[3] focus:outline-none dark:bg-neutral-800 dark:text-white [&:not([data-te-collapse-collapsed])]:[&:not([data-te-collapse-collapsed])]:text-primary [&:not([data-te-collapse-collapsed])]:[box-shadow:inset_0_-1px_0_rgba(229,231,235)] dark:[&:not([data-te-collapse-collapsed])]:bg-neutral-800 dark:[&:not([data-te-collapse-collapsed])]:text-primary-400 dark:[&:not([data-te-collapse-collapsed])]:[box-shadow:inset_0_-1px_0_rgba(75,85,99)]"
@@ -73,7 +73,7 @@
                                 <td class="flex-col px-6 py-4">
                                     {% for date in event.dates %}
                                         <p>
-                                            {{date.start_date}}
+                                            {{date.treat_uso}} | {{date.start_date}}
                                         </p>
                                     {% endfor %}
                                 </td>
@@ -97,9 +97,16 @@
 
                                 </td>
                                 <td class="flex-row px-6 py-4">
+                                    {% if not event.event.aprovado %}
                                     <button class="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded">
                                         Editar
-                                    </button>
+                                    </button>                                    
+                                    {% else %}
+                                    <button inactive  class="bg-transparent text-grey-700 font-semibold py-2 px-4 border border-grey-500  rounded" style = "pointer-events: none;">
+                                        Editar
+                                    </button>  
+
+                                    {% endif %}
                                     <button class="bg-transparent hover:bg-red-500 text-red-700 font-semibold hover:text-white py-2 px-4 border border-red-500 hover:border-transparent rounded">
                                         Excluir
                                     </button>
@@ -122,7 +129,7 @@
 
     <div
     id="acordion2"
-        class="rounded-t-lg border border-neutral-200 dark:border-neutral-600 dark:bg-neutral-800">
+        class="rounded-t-lg w-full border border-neutral-200 dark:border-neutral-600 dark:bg-neutral-800">
         <h2 class="mb-0" id="headingOne">
         <button
             class="group bg-white bg-opacity-40 relative flex w-full items-center rounded-t-[15px] border-0 px-5 py-4 text-left text-base text-neutral-800 transition [overflow-anchor:none] hover:z-[2] focus:z-[3] focus:outline-none dark:bg-neutral-800 dark:text-white [&:not([data-te-collapse-collapsed])]:[&:not([data-te-collapse-collapsed])]:text-primary [&:not([data-te-collapse-collapsed])]:[box-shadow:inset_0_-1px_0_rgba(229,231,235)] dark:[&:not([data-te-collapse-collapsed])]:bg-neutral-800 dark:[&:not([data-te-collapse-collapsed])]:text-primary-400 dark:[&:not([data-te-collapse-collapsed])]:[box-shadow:inset_0_-1px_0_rgba(75,85,99)]"
@@ -178,7 +185,7 @@
                                 <td class="flex-col px-6 py-4">
                                     {% for date in event.dates %}
                                         <p>
-                                            {{date.start_date}}
+                                            {{date.treat_uso}} | {{date.start_date}}
                                         </p>
                                     {% endfor %}
                                 </td>
