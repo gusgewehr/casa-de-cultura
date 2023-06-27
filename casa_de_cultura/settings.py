@@ -19,7 +19,7 @@ import platform
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
-sistema_operacional = platform.system() 
+sistema_operacional = platform.system()
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
@@ -60,7 +60,7 @@ ROOT_URLCONF = "casa_de_cultura.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        'DIRS': [BASE_DIR / "templates" ],
+        'DIRS': [BASE_DIR / "templates"],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -132,7 +132,7 @@ else:
     MEDIA_ROOT = '/var/opt/portal_analytics/media/'
 
 MEDIA_URL = '/media/'
-
+LOGOUT_REDIRECT_URL = '/accounts/login'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
