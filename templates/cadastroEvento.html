@@ -3,10 +3,8 @@
 {% block title %}Casa de Cultura - Cadastro{% endblock title %}
 
 {% block content %}
-<script>
 
-    var all_dates = "{{ all_dates }}"
-</script>
+{{ all_logged_dates|json_script:"all_logged_dates" }}
 
 {% if post_status %}
   {% if status %}
@@ -39,6 +37,8 @@
 
 
 {% endif %}
+
+
 
 <div class="px-3">
       <div class="mx-auto max-w-2xl text-center">

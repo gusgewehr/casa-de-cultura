@@ -159,17 +159,49 @@
 		const MONTH_NAMES = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
 		const DAYS = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'];
 
+		const all_logged_dates = JSON.parse(document.getElementById('all_logged_dates').textContent);		
+		
+		const all_dates_json = $.parseJSON("{ \"all_dates\": " + all_logged_dates + "}")
+
+		console.log(all_dates_json)
+
+
+		function create_registered_events_dates(){
+			events = []
+
+
+			all_dates_json["all_dates"].forEach(element => {
+				console.log(element)
+				var teste = element['fields']
+
+				this.events.push({
+						event_date: teste['start_date'],
+						event_title: teste['evento']['nome'],
+						event_theme: 'blue'
+					});
+
+
+
+			
+			});
+
+			return events
+		}
+
 		
 
 		function app() {
+
+			teste = create_registered_events_dates()
+			
 			return {
 				month: '',
 				year: '',
 				no_of_days: [],
 				blankdays: [],
 				days: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
+				events: teste,
 
-				events: [],
 				event_date_id: '',
 				event_title: 'Seu evento',
 				start_time: '',
@@ -195,6 +227,7 @@
 				},
 
 				showEventModal(date) {
+					console.log(this.events)
 					// open the modal
 					this.openEventModal = true;
 					this.event_date = new Date(this.year, this.month, date).toLocaleDateString("pt-BR");

@@ -4,6 +4,10 @@ from django.contrib.auth.models import User
 
 
 
+class EventManager(models.Manager):
+    def get_by_natural_key(self, dict):
+        return self.get(dict=dict)
+
 # Create your models here.
 class Event(models.Model):
     nome = models.CharField(max_length=500)
@@ -14,6 +18,18 @@ class Event(models.Model):
     ingresso_comunitario = models.BooleanField(default=False)
     usuario = models.ForeignKey(User, on_delete=models.DO_NOTHING)
     aprovado = models.BooleanField(default=False)
+
+
+    objects = EventManager()
+
+    def natural_key(self):
+        dict = {
+            "id": str(self.id),
+            "nome": self.nome,
+            "usuario": self.usuario.get_username(),
+            "aprovado": str(self.aprovado)
+        }
+        return (dict)
 
     def __str__(self):
         return self.nome
@@ -49,6 +65,11 @@ class EventDates(models.Model):
             "DMNT":"Desmontagem do Palco",
         }
         return type_choices[self.uso]
+    
+    def natural_key(self):
+        return (self.id,)+self.evento.natural_key()
+    
+    natural_key.dependencies = ["example_app.evento"]
 
     def __str__(self):
         return self.evento.nome + " " + str(self.start_date)
