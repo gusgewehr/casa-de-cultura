@@ -143,7 +143,7 @@ def cadastro_eventos(request):
             print('erro:  '+str(err))
             return render(request, 'cadastroEvento.html', {"post_status": True, 'status': False})
     else:
-        events = Event.objects.filter(aprovado=True)
+        
         all_dates = EventDates.objects.filter(
             start_date__gte=datetime.now()
         ).distinct().order_by('start_date')
@@ -151,8 +151,10 @@ def cadastro_eventos(request):
         all_logged_dates = serializers.serialize('json', all_dates, indent = 2,use_natural_foreign_keys=True, use_natural_primary_keys=True)   
         
         print(all_logged_dates)
+
+        evento = Event.objects.get(nome='Vitória da equipe IMPerado')
         
-        return render(request, 'cadastroEvento.html', {'all_logged_dates': all_logged_dates})
+        return render(request, 'cadastroEvento.html', {'all_logged_dates': all_logged_dates, 'event':evento})
 
 
 def eventos(request):
