@@ -7,7 +7,7 @@ from django.core import serializers
 from django.core.files.storage import FileSystemStorage
 from django.utils import timezone
 from django.conf import settings
-from dateutil import relativedelta
+from django.core.exceptions import PermissionDenied
 
 
 # Create your views here.
@@ -21,9 +21,26 @@ def images_dir(instance, filename):
 
 
 @login_required
-def cadastro_eventos(request):
+def cadastro_eventos(request, event_pk = None):
 
     curr_user = request.user
+
+    all_dates = EventDates.objects.filter(
+            start_date__gte=datetime.now()
+        ).distinct().order_by('start_date')
+
+    all_logged_dates = serializers.serialize('json', all_dates, indent = 2,use_natural_foreign_keys=True, use_natural_primary_keys=True)   
+
+    if event_pk and request.method != 'POST':        
+        
+        evento = Event.objects.get(pk=event_pk)
+
+        dates = EventDates.objects.filter(evento=evento)
+
+        if (curr_user == evento.usuario):
+            return render(request, 'cadastroEvento.html', {'all_logged_dates': all_logged_dates, 'event':evento, 'dates': dates,})
+        else:
+            return render(request, PermissionDenied())
 
     if request.method == "POST":
         response = request.POST
@@ -54,6 +71,112 @@ def cadastro_eventos(request):
                 preco = 0
         except:
             preco = 0
+        
+        try:
+            id = response['id']
+            old_event = Event.objects.get(id)
+        except:
+            id = None
+        
+
+        if id and curr_user == old_event.usuario:
+            event = Event(
+                id = id,
+                nome=response['nome'],
+                descricao=response['descricao'],
+                preco_ingresso=preco,
+                ingresso_meia=meia,
+                ingresso_comunitario=comunitario,
+                gratuito=gratuito,
+                usuario=curr_user
+            )
+
+            event.save()
+
+            old_dates = EventDates.objects.filter(evento=old_event)
+            for date in old_dates:
+                date.delete()
+
+            number_of_dates = int(response['number_of_dates'])
+            if int(number_of_dates) > 0:
+                for i in range(0, number_of_dates):
+                    if response['date_{}'.format(i)]:
+                        date_obj = datetime.strptime(
+                            response['date_{}'.format(i)], '%d/%m/%Y')
+                        print(date_obj)
+
+                        start_time_obj = datetime.strptime(
+                            response['start_time_{}'.format(i)], '%H:%M').time()
+
+                        end_time_obj = datetime.strptime(
+                            response['end_time_{}'.format(i)], '%H:%M').time()
+
+                        date_event = EventDates(
+                            evento=event,
+                            start_date=datetime.combine(
+                                date_obj, start_time_obj),
+                            end_date=datetime.combine(date_obj, end_time_obj),
+                            uso=response['type_{}'.format(i)]
+                        )
+
+                        date_event.save()
+
+            else:
+                date_obj = datetime.strptime(response['date_0'], '%d/%m/%Y')
+                print(date_obj)
+
+                start_time_obj = datetime.strptime(
+                    response['start_time_0'], '%H:%M').time()
+
+                end_time_obj = datetime.strptime(
+                    response['end_time_0'], '%H:%M').time()
+
+                date_event = EventDates(
+                    evento=event,
+                    start_date=datetime.combine(date_obj, start_time_obj),
+                    end_date=datetime.combine(date_obj, end_time_obj),
+                    uso=response['type_0']
+                )
+
+                date_event.save()
+            
+            try:
+                if (request.FILES['picture__input']):
+                    image_banner = True
+            except:
+                image_banner = False
+
+            if image_banner:
+                fss = FileSystemStorage()
+                file = request.FILES['picture__input']
+                event_image = EventImages(
+                    evento=event,
+                    image=fss.save(images_dir(event, file.name), file),
+                    is_cover=True
+                )
+
+                event_image.save()
+
+            try:
+                if (request.FILES['pictures_event_input']):
+                    image_list = True
+            except:
+                image_list = False
+
+            if (image_list):
+                fss2 = FileSystemStorage()
+                for f in request.FILES.getlist('pictures_event_input'):
+                    event_image_from_list = EventImages(
+                        evento=event,
+                        image=fss2.save(images_dir(event, f.name), f),
+                        is_cover=False
+                    )
+                    event_image_from_list.save()
+            
+
+            
+
+
 
         try:
             event = Event(
@@ -137,22 +260,14 @@ def cadastro_eventos(request):
                     )
                     event_image_from_list.save()
 
-            return render(request, 'cadastroEvento.html', {"post_status": True, 'status': True})
+            return render(request, 'cadastroEvento.html', {'all_logged_dates': all_logged_dates,"post_status": True, 'status': True})
         except Exception as err:
             event.delete()
             print('erro:  '+str(err))
-            return render(request, 'cadastroEvento.html', {"post_status": True, 'status': False})
+            return render(request, 'cadastroEvento.html', {'all_logged_dates': all_logged_dates,"post_status": True, 'status': False})
     else:
         
-        all_dates = EventDates.objects.filter(
-            start_date__gte=datetime.now()
-        ).distinct().order_by('start_date')
-
-        all_logged_dates = serializers.serialize('json', all_dates, indent = 2,use_natural_foreign_keys=True, use_natural_primary_keys=True)   
         
-        print(all_logged_dates)
-
-        evento = Event.objects.get(nome='Vitória da equipe IMPerado')
         
         return render(request, 'cadastroEvento.html', {'all_logged_dates': all_logged_dates, 'event':evento})
 

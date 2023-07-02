@@ -26,6 +26,7 @@ urlpatterns = [
     path("", eventos),
     path("home", eventos),
     path("cadastro-eventos", cadastro_eventos),
+    path("cadastro-eventos/<int:event_pk>", cadastro_eventos),
     path("accounts/", include("django.contrib.auth.urls")),
     path("meus-eventos", meusEventos),
     path("admin", admin.site.urls),
