@@ -1,6 +1,28 @@
 window.addEventListener("load", function(e){
     
-  
+    const event_dates = JSON.parse(document.getElementById('event_dates').textContent);		
+
+    const event_dates_json = $.parseJSON("{ \"event_dates\": " + event_dates + "}")
+
+    event_dates_json["event_dates"].forEach(element => {
+        date = element["fields"]
+
+        start_date = new Date(date["start_date"])
+        end_date = new Date(date["end_date"])
+
+
+        console.log(start_date.getDate())
+
+        add_date(
+            start_date.getDate()+"/"+start_date.getMonth()+"/"+start_date.getFullYear(), 
+            start_date.getHours()+":"+start_date.getMinutes(), 
+            end_date.getHours()+":"+end_date.getMinutes(), 
+            date["uso"]
+        )
+
+
+    
+    });
 
 
 });

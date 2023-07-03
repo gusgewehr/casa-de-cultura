@@ -6,6 +6,8 @@
 
 {{ all_logged_dates|json_script:"all_logged_dates" }}
 
+{{ event_dates|json_script:"event_dates" }}
+
 {% if post_status %}
   {% if status %}
     <div id="toast-success" class="fixed z-10 flex items-center w-full max-w-xs p-4 mb-4 text-gray-500 bg-white rounded-lg shadow dark:text-gray-400 dark:bg-gray-800" role="alert">
@@ -129,17 +131,6 @@
         <div class="date-picker">
           {% include 'calendar.html' %}
         </div>
-        
-        
-        
-        {% for  date in dates %}
-        <h1>
-          {{ date }}
-
-        </h1>
-
-        {% endfor %}
-
 
         <div id="date-fields"></div>
         <input name="number_of_dates" id="number_of_dates" type="hidden" value="{{dates|length|default:"0"}}">

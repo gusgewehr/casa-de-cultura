@@ -37,8 +37,10 @@ def cadastro_eventos(request, event_pk = None):
 
         dates = EventDates.objects.filter(evento=evento)
 
+        dates_json = serializers.serialize('json', dates)
+
         if (curr_user == evento.usuario):
-            return render(request, 'cadastroEvento.html', {'all_logged_dates': all_logged_dates, 'event':evento, 'dates': dates,})
+            return render(request, 'cadastroEvento.html', {'all_logged_dates': all_logged_dates, 'event':evento, 'event_dates': dates_json,})
         else:
             return render(request, PermissionDenied())
 

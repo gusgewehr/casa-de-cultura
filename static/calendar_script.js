@@ -6,7 +6,6 @@ const all_logged_dates = JSON.parse(document.getElementById('all_logged_dates').
 
 const all_dates_json = $.parseJSON("{ \"all_dates\": " + all_logged_dates + "}")
 
-console.log(all_dates_json)
 
 
 function create_registered_events_dates(){
@@ -14,7 +13,6 @@ function create_registered_events_dates(){
 
 
     all_dates_json["all_dates"].forEach(element => {
-        console.log(element)
         var teste = element['fields']
 
         this.events.push({
@@ -70,7 +68,6 @@ function app() {
         },
 
         showEventModal(date) {
-            console.log(this.events)
             // open the modal
             this.openEventModal = true;
             this.event_date = new Date(this.year, this.month, date).toLocaleDateString("pt-BR");
