@@ -8,6 +8,8 @@
 
 {{ event_dates|json_script:"event_dates" }}
 
+{{ event_images|json_script:"event_images" }}
+
 {% if post_status %}
   {% if status %}
     <div id="toast-success" class="fixed z-10 flex items-center w-full max-w-xs p-4 mb-4 text-gray-500 bg-white rounded-lg shadow dark:text-gray-400 dark:bg-gray-800" role="alert">
@@ -120,7 +122,7 @@
           <div class="text-gray-600 text-sm mb-0">
           {% if event.id %}
           
-            Mantenha vazio para não sobrescrever as imagens atuais
+            Não realize alterações caso não deseje sobrescrever as imagens atuais
           
           {% endif %}
           {% include 'imageUpload.html' %}

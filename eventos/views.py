@@ -39,8 +39,31 @@ def cadastro_eventos(request, event_pk = None):
 
         dates_json = serializers.serialize('json', dates)
 
+        images = EventImages.objects.filter(evento=evento)
+
+        event_images = []
+
+        banner = ""
+
+        for image in images:
+            if image.is_cover:
+                banner = image.image.url
+            else:
+                event_images.append(image.image.url)
+
+        images_json = {
+            "banner": banner,
+            "event_images": event_images
+        }
+
         if (curr_user == evento.usuario):
-            return render(request, 'cadastroEvento.html', {'all_logged_dates': all_logged_dates, 'event':evento, 'event_dates': dates_json,})
+            return render(request, 'cadastroEvento.html', {
+                'all_logged_dates': all_logged_dates, 
+                'event':evento, 
+                'event_dates': dates_json,
+                'event_images': images_json
+
+                })
         else:
             return render(request, PermissionDenied())
 
