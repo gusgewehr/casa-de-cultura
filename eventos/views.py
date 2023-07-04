@@ -98,80 +98,167 @@ def cadastro_eventos(request, event_pk = None):
             preco = 0
         
         try:
-            id = response['id']
-            old_event = Event.objects.get(id)
+            id = response['event_id']
+            old_event = Event.objects.get(id=id)
         except:
             id = None
         
-
+        
+################## atualizar evento ###############
         if id and curr_user == old_event.usuario:
-            event = Event(
-                id = id,
-                nome=response['nome'],
-                descricao=response['descricao'],
-                preco_ingresso=preco,
-                ingresso_meia=meia,
-                ingresso_comunitario=comunitario,
-                gratuito=gratuito,
-                usuario=curr_user
-            )
+            print("comecou a entrar aqui")
 
-            event.save()
+            try:
+                
+                old_event.nome=response['nome']
+                old_event.descricao=response['descricao']
+                old_event.preco_ingresso=preco
+                old_event.ingresso_meia=meia
+                old_event.ingresso_comunitario=comunitario
+                old_event.gratuito=gratuito
 
-            old_dates = EventDates.objects.filter(evento=old_event)
-            for date in old_dates:
-                date.delete()
+                old_event.save()
 
-            number_of_dates = int(response['number_of_dates'])
-            if int(number_of_dates) > 0:
-                for i in range(0, number_of_dates):
-                    if response['date_{}'.format(i)]:
-                        date_obj = datetime.strptime(
-                            response['date_{}'.format(i)], '%d/%m/%Y')
-                        print(date_obj)
+                old_dates = EventDates.objects.filter(evento=old_event)
+                for date in old_dates:
+                    date.delete()
 
-                        start_time_obj = datetime.strptime(
-                            response['start_time_{}'.format(i)], '%H:%M').time()
+                number_of_dates = int(response['number_of_dates'])
+                if int(number_of_dates) > 0:
+                    for i in range(0, number_of_dates):
+                        if response['date_{}'.format(i)]:
+                            date_obj = datetime.strptime(
+                                response['date_{}'.format(i)], '%d/%m/%Y')
 
-                        end_time_obj = datetime.strptime(
-                            response['end_time_{}'.format(i)], '%H:%M').time()
+                            start_time_obj = datetime.strptime(
+                                response['start_time_{}'.format(i)], '%H:%M').time()
 
-                        date_event = EventDates(
+                            end_time_obj = datetime.strptime(
+                                response['end_time_{}'.format(i)], '%H:%M').time()
+
+                            date_event = EventDates(
+                                evento=event,
+                                start_date=datetime.combine(
+                                    date_obj, start_time_obj),
+                                end_date=datetime.combine(date_obj, end_time_obj),
+                                uso=response['type_{}'.format(i)]
+                            )
+
+                            date_event.save()
+
+                else:
+                    date_obj = datetime.strptime(response['date_0'], '%d/%m/%Y')
+                    
+
+                    start_time_obj = datetime.strptime(
+                        response['start_time_0'], '%H:%M').time()
+
+                    end_time_obj = datetime.strptime(
+                        response['end_time_0'], '%H:%M').time()
+
+                    date_event = EventDates(
+                        evento=event,
+                        start_date=datetime.combine(date_obj, start_time_obj),
+                        end_date=datetime.combine(date_obj, end_time_obj),
+                        uso=response['type_0']
+                    )
+
+                    date_event.save()
+                
+                try:
+                    if (request.FILES['picture__input']):
+                        image_banner = True
+                except:
+                    image_banner = False
+
+                if image_banner:
+                    fss = FileSystemStorage()
+                    file = request.FILES['picture__input']
+                    event_image = EventImages(
+                        evento=event,
+                        image=fss.save(images_dir(event, file.name), file),
+                        is_cover=True
+                    )
+
+                    event_image.save()
+
+                try:
+                    if (request.FILES['pictures_event_input']):
+                        image_list = True
+                except:
+                    image_list = False
+
+                if (image_list):
+                    fss2 = FileSystemStorage()
+                    for f in request.FILES.getlist('pictures_event_input'):
+                        event_image_from_list = EventImages(
                             evento=event,
-                            start_date=datetime.combine(
-                                date_obj, start_time_obj),
-                            end_date=datetime.combine(date_obj, end_time_obj),
-                            uso=response['type_{}'.format(i)]
+                            image=fss2.save(images_dir(event, f.name), f),
+                            is_cover=False
                         )
-
-                        date_event.save()
-
-            else:
-                date_obj = datetime.strptime(response['date_0'], '%d/%m/%Y')
-                print(date_obj)
-
-                start_time_obj = datetime.strptime(
-                    response['start_time_0'], '%H:%M').time()
-
-                end_time_obj = datetime.strptime(
-                    response['end_time_0'], '%H:%M').time()
-
-                date_event = EventDates(
-                    evento=event,
-                    start_date=datetime.combine(date_obj, start_time_obj),
-                    end_date=datetime.combine(date_obj, end_time_obj),
-                    uso=response['type_0']
+                        event_image_from_list.save()
+            
+                return render(request, 'cadastroEvento.html', {'all_logged_dates': all_logged_dates,"post_status": True, 'status': True})
+            except Exception as err:
+                print(err)
+                return render(request, 'cadastroEvento.html', {'all_logged_dates': all_logged_dates,"post_status": True, 'status': False}) 
+        else:    
+############### novo evento #############
+            print('ta etrando no véi')
+            try:
+                event = Event(
+                    nome=response['nome'],
+                    descricao=response['descricao'],
+                    preco_ingresso=preco,
+                    ingresso_meia=meia,
+                    ingresso_comunitario=comunitario,
+                    gratuito=gratuito,
+                    usuario=curr_user
                 )
 
-                date_event.save()
-            
-            try:
-                if (request.FILES['picture__input']):
-                    image_banner = True
-            except:
-                image_banner = False
+                event.save()
 
-            if image_banner:
+                number_of_dates = int(response['number_of_dates'])
+                if int(number_of_dates) > 0:
+                    for i in range(0, number_of_dates):
+                        if response['date_{}'.format(i)]:
+                            date_obj = datetime.strptime(
+                                response['date_{}'.format(i)], '%d/%m/%Y')
+
+                            start_time_obj = datetime.strptime(
+                                response['start_time_{}'.format(i)], '%H:%M').time()
+
+                            end_time_obj = datetime.strptime(
+                                response['end_time_{}'.format(i)], '%H:%M').time()
+
+                            date_event = EventDates(
+                                evento=event,
+                                start_date=datetime.combine(
+                                    date_obj, start_time_obj),
+                                end_date=datetime.combine(date_obj, end_time_obj),
+                                uso=response['type_{}'.format(i)]
+                            )
+
+                            date_event.save()
+
+                else:
+                    date_obj = datetime.strptime(response['date_0'], '%d/%m/%Y')
+
+                    start_time_obj = datetime.strptime(
+                        response['start_time_0'], '%H:%M').time()
+
+                    end_time_obj = datetime.strptime(
+                        response['end_time_0'], '%H:%M').time()
+
+                    date_event = EventDates(
+                        evento=event,
+                        start_date=datetime.combine(date_obj, start_time_obj),
+                        end_date=datetime.combine(date_obj, end_time_obj),
+                        uso=response['type_0']
+                    )
+
+                    date_event.save()
+
                 fss = FileSystemStorage()
                 file = request.FILES['picture__input']
                 event_image = EventImages(
@@ -182,119 +269,31 @@ def cadastro_eventos(request, event_pk = None):
 
                 event_image.save()
 
-            try:
-                if (request.FILES['pictures_event_input']):
-                    image_list = True
-            except:
-                image_list = False
+                try:
+                    if (request.FILES['pictures_event_input']):
+                        image_list = True
+                except:
+                    image_list = False
 
-            if (image_list):
-                fss2 = FileSystemStorage()
-                for f in request.FILES.getlist('pictures_event_input'):
-                    event_image_from_list = EventImages(
-                        evento=event,
-                        image=fss2.save(images_dir(event, f.name), f),
-                        is_cover=False
-                    )
-                    event_image_from_list.save()
-            
-
-            
-
-
-
-        try:
-            event = Event(
-                nome=response['nome'],
-                descricao=response['descricao'],
-                preco_ingresso=preco,
-                ingresso_meia=meia,
-                ingresso_comunitario=comunitario,
-                gratuito=gratuito,
-                usuario=curr_user
-            )
-
-            event.save()
-
-            number_of_dates = int(response['number_of_dates'])
-            if int(number_of_dates) > 0:
-                for i in range(0, number_of_dates):
-                    if response['date_{}'.format(i)]:
-                        date_obj = datetime.strptime(
-                            response['date_{}'.format(i)], '%d/%m/%Y')
-                        print(date_obj)
-
-                        start_time_obj = datetime.strptime(
-                            response['start_time_{}'.format(i)], '%H:%M').time()
-
-                        end_time_obj = datetime.strptime(
-                            response['end_time_{}'.format(i)], '%H:%M').time()
-
-                        date_event = EventDates(
+                if (image_list):
+                    fss2 = FileSystemStorage()
+                    for f in request.FILES.getlist('pictures_event_input'):
+                        event_image_from_list = EventImages(
                             evento=event,
-                            start_date=datetime.combine(
-                                date_obj, start_time_obj),
-                            end_date=datetime.combine(date_obj, end_time_obj),
-                            uso=response['type_{}'.format(i)]
+                            image=fss2.save(images_dir(event, f.name), f),
+                            is_cover=False
                         )
+                        event_image_from_list.save()
 
-                        date_event.save()
-
-            else:
-                date_obj = datetime.strptime(response['date_0'], '%d/%m/%Y')
-                print(date_obj)
-
-                start_time_obj = datetime.strptime(
-                    response['start_time_0'], '%H:%M').time()
-
-                end_time_obj = datetime.strptime(
-                    response['end_time_0'], '%H:%M').time()
-
-                date_event = EventDates(
-                    evento=event,
-                    start_date=datetime.combine(date_obj, start_time_obj),
-                    end_date=datetime.combine(date_obj, end_time_obj),
-                    uso=response['type_0']
-                )
-
-                date_event.save()
-
-            fss = FileSystemStorage()
-            file = request.FILES['picture__input']
-            event_image = EventImages(
-                evento=event,
-                image=fss.save(images_dir(event, file.name), file),
-                is_cover=True
-            )
-
-            event_image.save()
-
-            try:
-                if (request.FILES['pictures_event_input']):
-                    image_list = True
-            except:
-                image_list = False
-
-            if (image_list):
-                fss2 = FileSystemStorage()
-                for f in request.FILES.getlist('pictures_event_input'):
-                    event_image_from_list = EventImages(
-                        evento=event,
-                        image=fss2.save(images_dir(event, f.name), f),
-                        is_cover=False
-                    )
-                    event_image_from_list.save()
-
-            return render(request, 'cadastroEvento.html', {'all_logged_dates': all_logged_dates,"post_status": True, 'status': True})
-        except Exception as err:
-            event.delete()
-            print('erro:  '+str(err))
-            return render(request, 'cadastroEvento.html', {'all_logged_dates': all_logged_dates,"post_status": True, 'status': False})
-    else:
-        
-        
-        
-        return render(request, 'cadastroEvento.html', {'all_logged_dates': all_logged_dates, 'event':evento})
+                return render(request, 'cadastroEvento.html', {'all_logged_dates': all_logged_dates,"post_status": True, 'status': True})
+            except Exception as err:
+                event.delete()
+                print('erro:  '+str(err))
+                return render(request, 'cadastroEvento.html', {'all_logged_dates': all_logged_dates,"post_status": True, 'status': False})
+    
+    
+    else:      
+        return render(request, 'cadastroEvento.html', {'all_logged_dates': all_logged_dates})
 
 
 def eventos(request):
@@ -371,10 +370,10 @@ def meusEventos(request):
             })
 
 
-    event_date = EventDates.objects.all()
+    # event_date = EventDates.objects.all()
 
-    event_list = Event.objects.all().filter(
-        usuario=request.user)
+    # event_list = Event.objects.all().filter(
+    #     usuario=request.user)
 
     context = {
         'future_events': dict_future_events,

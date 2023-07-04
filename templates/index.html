@@ -212,7 +212,7 @@
 
 {% block content %}
 <section class="flex justify-center">
-    <div class="container md:px-32">
+    <div class="container ">
         <div class="carousel">
             {% for i in range|slice:":6" %}
             {% if forloop.first %}
@@ -221,7 +221,7 @@
             <input type="radio" name="slides" id="slide-{{forloop.counter}}">
             {% endif %}
             {% endfor %}
-            <ul class="carousel__slides">
+            <ul class="carousel__slides max-w-8xl">
                 {% for date in dates|slice:":6" %}
                 <li class="carousel__slide">
                     <figure>

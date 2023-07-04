@@ -52,7 +52,7 @@
     </script>
 </head>
 
-<body>
+<body class="min-w-screen max-w-screen min-h-screen flex flex-col justify-between items-stretch">
 
     <div id="modal" class="modal absolute z-20 h-full w-full  items-center justify-center bg-black bg-opacity-30" style="display: none;">
             <button onclick="close_modal()" class="z-30 btn_close_modal absolute top-0 right-0 text-3xl text-white font-bold mr-5">X</button>
@@ -122,7 +122,7 @@
         </div>
     </nav>
 
-    <div class="isolate bg-white py-3 sm:py-6 w-full">
+    <div class="bg-transparent py-3 sm:py-6 w-full flex grow">
         <div class="absolute inset-x-0 top-[-5rem] -z-10 transform-gpu overflow-hidden blur-3xl sm:top-[-20rem]"
             aria-hidden="true">
             <div class="relative left-1/2 -z-10 aspect-[1155/678] w-[36.125rem] max-w-none -translate-x-1/2 rotate-[30deg] bg-gradient-to-tr from-[#ff80b5] to-[#9089fc] opacity-30 sm:left-[calc(50%-40rem)] sm:w-[72.1875rem]"
@@ -136,7 +136,7 @@
         </div>
     </div>
 
-    <footer class="text-center text-white dark:bg-neutral-600 border-t-2 border-t-neutral-800">
+    <footer class="text-center text-white dark:bg-neutral-600 border-t-2 border-t-neutral-800 max-h-75">
         <div class="pt-4">
             <div class="mb-3 flex justify-center">
                 <a href="#!" class="mr-9 text-neutral-800 dark:text-neutral-200 hover:text-blue-700">
@@ -170,8 +170,7 @@
     </footer>
 
     <!-- Tailwind Elements JavaScript -->
-    <script src="https://cdn.jsdelivr.net/npm/tw-elements/dist/js/tw-elements.umd.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.5/flowbite.min.js"></script>
+    
 
 </body>
 

@@ -49,9 +49,9 @@
         <h2 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Evento</h2>
         <p class="mt-2 text-lg leading-8 text-gray-600">Informe os dados do evento que deseja realizar na Casa de Cultura Osvaldo Krames</p>
       </div>
-      <form action="cadastro-eventos" method="POST" class="mx-auto mt-16 max-w-6xl sm:mt-20" enctype="multipart/form-data">
+      <form action="/cadastro-eventos" method="POST" class="mx-auto mt-16 max-w-6xl sm:mt-20" enctype="multipart/form-data">
         {% csrf_token %}
-        <input hidden disabled id="event_id" class="display: none"  value="{{event.id}}">
+        <input hidden id="event_id" name="event_id" class="display: none"  value="{{event.id}}">
         <div id="form_body_general" class="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-3">
           <div class="sm:col-span-3">
             <label for="nome" class="block text-sm font-semibold leading-6 text-gray-900">Evento*</label>
@@ -141,6 +141,10 @@
         </div>
       </form>
 </div> 
+
+{% if event.id %}
+<script src="/static/edit_cad_event.js"></script>
+{% endif %}
     
 
 {% endblock content %}
