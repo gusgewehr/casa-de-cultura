@@ -5,27 +5,9 @@
 
 }
 
-html{
-    font-family: 'Montserrat', sans-serif;
-}
-
-div{
-    display: flex;
-    gap: 0.2em;
-}
-body{
-    display: flex;
-    flex-wrap: wrap;
-    background-color: white;
-    color: var(--laranja);
-    align-items: center;
-    justify-content: center;
-}
 b{
     font-weight: bold;
 }
-
-
 
 input{    
     font-family: inherit;
@@ -46,33 +28,6 @@ input:focus{
     transition:all 0.2s;
 }
 
-
-.front_card{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-between;
-    width: 50vw;
-    min-height: 100vh;
-    background-color: var(--cinza);
-    padding: 1.5em;
-    border-radius: 50px;
-    gap: 1.5em;   
-}
-
-.front_card h1{
-    font-size: 1.8em;
-}
-
-
-
-
-
-.indicador_img{
-    width: 80%;    
-    animation: float 3s ease-in-out infinite;
-}
-
 @keyframes float{
 	0%,100%{
 		
@@ -82,21 +37,6 @@ input:focus{
 		
 		transform:translatey(-20px)
 	}
-}
-
-@media screen and (max-width: 1500px){
-    .indicador_img{
-        height: auto;
-        max-width: 100%;    
-    }
-    
-}
-
-
-
-
-.logo img{
-    height: 10vh;
 }
 
 .section_left{
@@ -158,68 +98,15 @@ input:focus{
     border-radius: 5px;
 }
 
-@media only screen and (min-width: 700px){
-    .mobile_card{
-        display: none;
-    }
-    
-}
-
 
 @media only screen and (max-width: 700px){
     .login_card{
         width: 100%;
     }
-    .front_card{
-        display: none;
-    }
     .section_left{
         width: 100%;
     }
-
-    .mobile_card{
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        background-color: var(--cinza);
-        border-radius: 16px;
-        width: 100%;
-        justify-content: center;
-        padding: 1em;
-        gap: 0.5em;
-    }
-    .mobile_card>img{
-        height: auto;
-        width: 65%;
-    }
-    .mobile_logo{
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;        
-    }
-    .mobile_logo h1{
-        text-align: center;
-        font-size: 2.5em;
-    }
-    .logo img{
-        height: 75px;
-    }
 }
-
-@media only screen and (max-width: 500px){
-    .mobile_logo h1{
-        font-size: 2em;
-    }
-    .logo img{
-        height: 50px;
-    }
-    .mobile_card>img{
-        height: auto;
-        width: 90%;
-    }
-}
-
 
 #loading {
     display: none;
@@ -231,45 +118,20 @@ input:focus{
 
 
 .loader {
-
-
     margin: auto;
-  
-  
     border: 20px solid #EAF0F6;
-  
-  
     border-radius: 50%;
-  
-  
-    border-top: 20px solid var(--laranja);
-  
-  
-    width: 200px;
-  
-  
+    border-top: 20px solid var(--laranja);  
+    width: 200px;  
     height: 200px;
-  
-  
     animation: spinner 4s linear infinite;
+}
   
-  
-  }
-  
-  
-   
-  
-  
-  @keyframes spinner {
-  
-  
+
+@keyframes spinner {
     0% { transform: rotate(0deg); }
-  
-  
     100% { transform: rotate(360deg); }
-  
-  
-  }
+}
 
 
 

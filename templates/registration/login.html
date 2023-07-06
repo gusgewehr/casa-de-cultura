@@ -1,69 +1,33 @@
+{% extends 'base.html' %}
+{% block title %}Casa de Cultura - Login{% endblock title %}
+
 {% load static %}
-<html>
-    <head>
-        <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,900&display=swap" rel="stylesheet" />
 
-        <!-- Tailwind Elements styles-->
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tw-elements/dist/css/tw-elements.min.css" />
-        
+{% block head %}
+<link rel="stylesheet" href="{% static 'my_style_login.css' %}">
+{% endblock head %}
 
-        <!-- Tailwind CSS config -->
-        <script src="https://cdn.tailwindcss.com/3.3.0"></script>
-        <script src="/static/script.js"></script>
+{% block content %}
 
-        <script>
-            tailwind.config = {
-                darkMode: "class",
-                theme: {
-                    fontFamily: {
-                        sans: ["Roboto", "sans-serif"],
-                        body: ["Roboto", "sans-serif"],
-                        mono: ["ui-monospace", "monospace"],
-                    },
-                },
-                corePlugins: {
-                    preflight: false,
-                },
-            };
-
-        </script>
-        
-        
-        
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <script src="https://kit.fontawesome.com/8e543a0707.js" crossorigin="anonymous"></script>
-        <link rel="stylesheet" href="{% static 'my_style_login.css' %}">
-
-        <title>Casa de Cultura Oswaldo Krames</title>
-        
-        <meta name='viewport' content='width=device-width, initial-scale=1'>
-        
-    </head>
-    <body>
-
-        <div class="isolate bg-white px-3 py-8 sm:py-12">
-            <div class="absolute inset-x-0 top-[-5rem] -z-10 transform-gpu overflow-hidden blur-3xl sm:top-[-20rem]" aria-hidden="true">
-              <div class="relative left-1/2 -z-10 aspect-[1155/678] w-[36.125rem] max-w-none -translate-x-1/2 rotate-[30deg] bg-gradient-to-tr from-[#ff80b5] to-[#9089fc] opacity-30 sm:left-[calc(50%-40rem)] sm:w-[72.1875rem]" style="clip-path: polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)"></div>
-            </div>
-        <div class="section_left">
-            <section class="login_card">
-                <h2><b>Entrar</b></h2>
-                <div id="loading">
-                    <div class="loader">
-                    </div>
+<div class="isolate px-3 py-8 sm:py-12 drop-shadow-lg w-full md:w-6/12">
+    <div class="section_left">
+        <section class="login_card">
+            <h2><b>Entrar</b></h2>
+            <div id="loading">
+                <div class="loader">
                 </div>
-                    <form method="post" class="login_form">
-                        {% csrf_token %}
-                        {{ form.as_p }}
-                        <button type="submit">
-                            Entrar
-                        </button>
-                    </form>
-            </section>
-        </div>
-        </div>
-        <script src="https://cdn.jsdelivr.net/npm/tw-elements/dist/js/tw-elements.umd.min.js"></script>
-
-    </body>
-</html>
+            </div>
+            <form method="post" class="login_form">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit">
+                    Entrar
+                </button>
+            </form>
+            <a href="{% url 'password_reset' %}" class="text-md text-blue-700 hover:underline ml-auto">Esqueceu a
+                senha?</a>
+        </section>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/tw-elements/dist/js/tw-elements.umd.min.js"></script>
+{% endblock content %}
