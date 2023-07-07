@@ -4,6 +4,11 @@
 
 {% block content %}
 
+
+
+
+
+
 <div id="accordion" class="max-w-screen-xl w-full "  style="display: flex; flex-direction: column; gap: 50px; align-items: center; justify-content: center;">
 
 
@@ -113,7 +118,7 @@
                                     </button>  
 
                                     {% endif %}
-                                    <button class="bg-transparent hover:bg-red-500 text-red-700 font-semibold hover:text-white py-2 px-4 border border-red-500 hover:border-transparent rounded">
+                                    <button  value="{{event.event.id}}"  onclick="open_tiny_modal({{event.event.id}})" class="del_event bg-transparent hover:bg-red-500 text-red-700 font-semibold hover:text-white py-2 px-4 border border-red-500 hover:border-transparent rounded">
                                         Excluir
                                     </button>
                                 </td>

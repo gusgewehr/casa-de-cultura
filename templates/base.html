@@ -62,6 +62,7 @@
     </div>
 
     
+    {% include 'modal.html' %}
 
 
 
@@ -130,7 +131,7 @@
             </div>
         </div>
         <div class="w-full flex justify-center align-items">
-
+            {% include 'toasts.html' %}
             {% block content %}
             {% endblock content %}
         </div>
@@ -171,7 +172,29 @@
 
     <!-- Tailwind Elements JavaScript -->
     
+    {% if clean_form %}
+        <script>
+            forms = document.getElementsByTagName("form")
 
+            for(var form of forms){
+                inputs = form.getElementsByTagName("input")
+
+                for(var input of inputs){
+                    if(input.name != "csrfmiddlewaretoken"){
+
+                        input.setAttribute("name", "") 
+                        console.log(input)
+                    }
+                }
+
+
+            }
+
+
+
+
+        </script>
+    {% endif %}
 </body>
 
 
