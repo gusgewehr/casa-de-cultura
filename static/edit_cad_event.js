@@ -4,19 +4,54 @@ window.addEventListener("load", function(e){
 
     const event_dates_json = $.parseJSON("{ \"event_dates\": " + event_dates + "}")
 
+    console.log(event_dates_json)
+
     event_dates_json["event_dates"].forEach(element => {
         date = element["fields"]
 
         start_date = new Date(date["start_date"])
         end_date = new Date(date["end_date"])
 
+        day = start_date.getDate()
+        if(parseInt(day) < 10){
+            day = '0'+day
+        }
+
+        
+        month = start_date.getMonth()+1
+        if(parseInt(month) < 10){
+            month = '0'+month
+        }
+
+        start_hour = start_date.getHours()
+        if(parseInt(start_hour) < 10){
+            start_hour = '0'+start_hour
+        }
+
+
+        end_hour = end_date.getHours()
+        if(parseInt(end_hour) < 10){
+            end_hour = '0'+end_hour
+        }
+
+        start_min = start_date.getHours()
+        if(parseInt(start_min) < 10){
+            start_min = '0'+start_min
+        }
+
+
+        end_min = end_date.getHours()
+        if(parseInt(end_min) < 10){
+            end_min = '0'+end_min
+        }
 
 
         add_date(
-            start_date.getDate()+"/"+start_date.getMonth()+"/"+start_date.getFullYear(), 
-            start_date.getHours()+":"+start_date.getMinutes(), 
-            end_date.getHours()+":"+end_date.getMinutes(), 
-            date["uso"]
+            day+"/"+month+"/"+start_date.getFullYear(), 
+            start_hour+":"+start_min, 
+            end_hour+":"+end_min, 
+            date["uso"],
+            element["pk"]
         )
     });
     //console.log(document.getElementById('event_images').textContent)

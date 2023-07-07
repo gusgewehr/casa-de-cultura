@@ -26,7 +26,7 @@ function update_number_of_dates() {
     num.setAttribute("value", number_of_dates)
 }
 
-function add_date(date, start_time, end_time, type){
+function add_date(date, start_time, end_time, type, date_id = null){
     
     var pai = document.getElementById("date-fields")
 
@@ -46,10 +46,18 @@ function add_date(date, start_time, end_time, type){
     rm_date.setAttribute("class", "bg-transparent hover:bg-red-500 text-red-700 font-semibold hover:text-white py-2 px-4 border border-red-500 hover:border-transparent rounded")
     new_div.appendChild(rm_date)
 
+    var new_input_id = document.createElement("input")
+    
+    new_input_id.setAttribute("id", "id_date_"+number_of_dates)
+    new_input_id.setAttribute("name", "id_date_"+number_of_dates)
+    new_input_id.readOnly = true
+    new_input_id.setAttribute("type", "text")
+    new_input_id.setAttribute("value", date_id)
+    new_input_id.setAttribute("style", "display: none;")
+    new_div.appendChild(new_input_id)
 
 
-
-    var filho = document.getElementById("date_group_"+number_of_dates)
+    //var filho = document.getElementById("date_group_"+number_of_dates)
     var new_date_input = document.createElement("input")
     new_date_input.setAttribute("name", "date_"+number_of_dates)
     new_date_input.readOnly = true
@@ -103,8 +111,8 @@ function rm_date(value){
 
     date.remove()
 
-    number_of_dates--
-    update_number_of_dates()
+    //number_of_dates--
+    //update_number_of_dates()
 }
 
 function free_event_check(){

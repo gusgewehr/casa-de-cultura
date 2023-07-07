@@ -42,7 +42,9 @@
         data-te-collapse-show
         aria-labelledby="headingOne"
         data-te-parent="#acordion1" class="!visible relative overflow-x-auto shadow-md sm:rounded-lg px-6">
+        {% if future_events %}
             <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                
                 <thead class="text-xs text-gray-700 uppercase dark:text-gray-400">
                     <tr>
                         <th scope="col" class="px-6 py-3">
@@ -60,7 +62,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {% if future_events %}
+                    
                         {% for event in future_events %}
 
                             <tr class="border-b border-gray-200 dark:border-gray-700">
@@ -118,15 +120,17 @@
                                 
                             </tr>
                         {% endfor %}
-                    {% else %}
-                        <tr class="border-b border-gray-200 dark:border-gray-700">
-                            Sem eventos futuros
-                        </tr>
-                    {% endif %}     
+                        
 
 
                 </tbody>
+                
             </table>
+            {% else %}
+                <div class="border-b border-gray-200 dark:border-gray-700 p-10">
+                    Sem eventos futuros
+                </div>
+            {% endif %} 
         </div>
     </div>
 
@@ -164,7 +168,9 @@
         data-te-collapse-item
         aria-labelledby="headingTwo"
         data-te-parent="#acordion2" class="!visible hidden relative overflow-x-auto shadow-md sm:rounded-lg px-6">
+        {% if past_events %}
             <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                
                 <thead class="text-xs text-gray-700 uppercase dark:text-gray-400">
                     <tr>
                         <th scope="col" class="px-6 py-3">
@@ -176,7 +182,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {% if past_events %}
+                    
                         {% for event in past_events %}
 
                             <tr class="border-b border-gray-200 dark:border-gray-700">
@@ -196,14 +202,16 @@
                                 
                             </tr>
                         {% endfor %}
-                    {% else %}
-                        <tr class="border-b border-gray-200 dark:border-gray-700">
-                            Sem eventos passados
-                        </tr>
-                    {% endif %}     
+                       
 
                 </tbody>
+                 
             </table>
+            {% else %}
+                        <div class="border-b border-gray-200 dark:border-gray-700 p-10">
+                            Sem eventos passados
+                        </div>
+                {% endif %} 
         </div>
 
     </div>

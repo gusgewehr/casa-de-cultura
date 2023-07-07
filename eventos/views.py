@@ -1,4 +1,4 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import redirect, render, get_object_or_404
 from .models import Event, EventDates, EventImages
 from django.contrib.auth.decorators import login_required
 from datetime import datetime
@@ -106,8 +106,6 @@ def cadastro_eventos(request, event_pk = None):
         
 ################## atualizar evento ###############
         if id and curr_user == old_event.usuario:
-            print("comecou a entrar aqui")
-
             try:
                 
                 old_event.nome=response['nome']
@@ -122,11 +120,11 @@ def cadastro_eventos(request, event_pk = None):
                 old_dates = EventDates.objects.filter(evento=old_event)
                 for date in old_dates:
                     date.delete()
-
+                
                 number_of_dates = int(response['number_of_dates'])
                 if int(number_of_dates) > 0:
                     for i in range(0, number_of_dates):
-                        if response['date_{}'.format(i)]:
+                        try:
                             date_obj = datetime.strptime(
                                 response['date_{}'.format(i)], '%d/%m/%Y')
 
@@ -135,9 +133,9 @@ def cadastro_eventos(request, event_pk = None):
 
                             end_time_obj = datetime.strptime(
                                 response['end_time_{}'.format(i)], '%H:%M').time()
-
+                            
                             date_event = EventDates(
-                                evento=event,
+                                evento=old_event,
                                 start_date=datetime.combine(
                                     date_obj, start_time_obj),
                                 end_date=datetime.combine(date_obj, end_time_obj),
@@ -145,25 +143,9 @@ def cadastro_eventos(request, event_pk = None):
                             )
 
                             date_event.save()
-
-                else:
-                    date_obj = datetime.strptime(response['date_0'], '%d/%m/%Y')
-                    
-
-                    start_time_obj = datetime.strptime(
-                        response['start_time_0'], '%H:%M').time()
-
-                    end_time_obj = datetime.strptime(
-                        response['end_time_0'], '%H:%M').time()
-
-                    date_event = EventDates(
-                        evento=event,
-                        start_date=datetime.combine(date_obj, start_time_obj),
-                        end_date=datetime.combine(date_obj, end_time_obj),
-                        uso=response['type_0']
-                    )
-
-                    date_event.save()
+                        except:
+                            print(f'Data número {i} não encontrada, indo para a p´roxima')
+                        
                 
                 try:
                     if (request.FILES['picture__input']):
@@ -172,11 +154,15 @@ def cadastro_eventos(request, event_pk = None):
                     image_banner = False
 
                 if image_banner:
+                    old_banner = EventImages.objects.filter(evento = old_event, is_cover=True)
+                    for banner in old_banner:
+                        banner.delete()
+
                     fss = FileSystemStorage()
                     file = request.FILES['picture__input']
                     event_image = EventImages(
-                        evento=event,
-                        image=fss.save(images_dir(event, file.name), file),
+                        evento=old_event,
+                        image=fss.save(images_dir(old_event, file.name), file),
                         is_cover=True
                     )
 
@@ -191,14 +177,19 @@ def cadastro_eventos(request, event_pk = None):
                 if (image_list):
                     fss2 = FileSystemStorage()
                     for f in request.FILES.getlist('pictures_event_input'):
+
+                        old_imgs = EventImages.objects.filter(evento = old_event, is_cover=False)
+                        for img in old_imgs:
+                            img.delete()
+
                         event_image_from_list = EventImages(
-                            evento=event,
-                            image=fss2.save(images_dir(event, f.name), f),
+                            evento=old_event,
+                            image=fss2.save(images_dir(old_event, f.name), f),
                             is_cover=False
                         )
                         event_image_from_list.save()
-            
-                return render(request, 'cadastroEvento.html', {'all_logged_dates': all_logged_dates,"post_status": True, 'status': True})
+
+                return redirect('/meus-eventos')  #render(request, 'cadastroEvento.html', {'all_logged_dates': all_logged_dates,"post_status": True, 'status': True})
             except Exception as err:
                 print(err)
                 return render(request, 'cadastroEvento.html', {'all_logged_dates': all_logged_dates,"post_status": True, 'status': False}) 
