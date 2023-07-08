@@ -8,17 +8,36 @@ const all_dates_json = $.parseJSON("{ \"all_dates\": " + all_logged_dates + "}")
 
 
 
+
 function create_registered_events_dates(){
     events = []
 
+    var dict = {
+        "AP": "purple",
+        "EN": "green",
+        "MNT": "yellow",
+        "DMNT": "yellow",
+        "aprovado": "red",
+    }
+
 
     all_dates_json["all_dates"].forEach(element => {
-        var teste = element['fields']
+        var date = element['fields']
 
+        if(date["evento"]["aprovado"] =="True" && date['uso'] == "AP"){
+            cor = "aprovado"
+        }
+        else{
+            cor = date["uso"]
+        }
+        
+
+        start_date = new Date(date["start_date"])
         this.events.push({
-                event_date: teste['start_date'],
-                event_title: teste['evento']['nome'],
-                event_theme: 'blue'
+                id: -1,
+                event_date: date['start_date'],
+                event_title: start_date.getHours()+":"+start_date.getMinutes()+" "+date['evento']['nome'],
+                event_theme: dict[cor]
             });
 
 
@@ -29,12 +48,77 @@ function create_registered_events_dates(){
     return events
 }
 
+function get_registered_dates_for_editd_event(){
+    var added_dates = []
 
+    try{
+        const event_dates = JSON.parse(document.getElementById('event_dates').textContent);		
+
+        const event_dates_json = $.parseJSON("{ \"event_dates\": " + event_dates + "}")
+
+        event_dates_json["event_dates"].forEach(element => {
+            date = element["fields"]
+
+            start_date = new Date(date["start_date"])
+            end_date = new Date(date["end_date"])
+
+            day = start_date.getDate()
+            if(parseInt(day) < 10){
+                day = '0'+day
+            }
+
+            
+            month = start_date.getMonth()+1
+            if(parseInt(month) < 10){
+                month = '0'+month
+            }
+
+            start_hour = start_date.getHours()
+            if(parseInt(start_hour) < 10){
+                start_hour = '0'+start_hour
+            }
+
+
+            end_hour = end_date.getHours()
+            if(parseInt(end_hour) < 10){
+                end_hour = '0'+end_hour
+            }
+
+            start_min = start_date.getHours()
+            if(parseInt(start_min) < 10){
+                start_min = '0'+start_min
+            }
+
+
+            end_min = end_date.getHours()
+            if(parseInt(end_min) < 10){
+                end_min = '0'+end_min
+            }
+
+
+            added_dates.push( {
+                    date: day+"/"+month+"/"+start_date.getFullYear(), 
+                    start_time: start_hour+":"+start_min, 
+                    end_time: end_hour+":"+end_min, 
+                    type: date["uso"]
+                }
+            )
+        })
+
+        return added_dates
+    }
+    catch{
+        return added_dates
+    }
+}
 
 function app() {
 
     teste = create_registered_events_dates()
-    
+
+    event_edit_added_dates = get_registered_dates_for_editd_event()
+
+           
     return {
         month: '',
         year: '',
@@ -42,7 +126,6 @@ function app() {
         blankdays: [],
         days: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
         events: teste,
-
         event_date_id: '',
         event_title: 'Seu evento',
         start_time: '',
@@ -50,8 +133,32 @@ function app() {
         end_time: '',
         date_type: 'AP',
         event_theme: 'blue',
-
+        number_of_dates: 0,
+        added_dates: event_edit_added_dates,
         openEventModal: false,
+
+        getCurrentDateId(date){
+            return date.id
+        },
+
+        generateElementName(element_type, date){
+
+            // type_input.setAttribute("name", "type_"+number_of_dates)
+            // end_time_input.setAttribute("name", "end_time_"+number_of_dates)
+            // start_time_input.setAttribute("name", "start_time_"+number_of_dates)
+            // new_date_input.setAttribute("name", "date_"+number_of_dates)
+            
+            var cur_pos = this.added_dates.indexOf(date)
+
+            return element_type+cur_pos
+        },
+
+
+
+
+        ehteste(varqualquer){
+            return 'testou'+varqualquer
+        },
 
         initDate() {
             let today = new Date();
@@ -110,32 +217,55 @@ function app() {
             return is_past;
         },
 
+        rmDate(date){
 
+            this.added_dates.pop(date)
 
-        addEvent() {
-
-            if (this.event_title == '') {
-                return;
+            for(var event of this.events){
+                if(event.id == date.id){
+                    this.events.pop(event)
+                }
             }
+
+            this.number_of_dates--
+
+        },
+
+        addEvent() {           
+            
 
             dateParts = this.event_date.split("/")
             eventDate = new Date(dateParts[2], dateParts[1]-1, dateParts[0])
 
+            this.added_dates.push({
+                id: this.number_of_dates,
+                date: eventDate,
+                start_time: this.start_time,
+                end_time: this.end_time,
+                type: this.date_type
+            }) 
+
             this.events.push({
+                id: this.number_of_dates,
                 event_date: eventDate,
                 event_title: this.event_title,
                 event_theme: this.event_theme
             });
 
-            add_date(this.event_date, this.start_time, this.end_time, this.date_type)
+                  
 
+            
+            console.log(this.added_dates)
             // clear the form data
             this.event_date = '';
 
             //close the modal
             this.openEventModal = false;
+
+            this.number_of_dates++
         },
 
+        
         getNoOfDays() {
             
             let daysInMonth = new Date(this.year, this.month + 1, 0).getDate();
