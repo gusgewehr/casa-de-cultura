@@ -239,7 +239,7 @@ function app() {
 
             this.added_dates.push({
                 id: this.number_of_dates,
-                date: eventDate,
+                date: this.event_date,
                 start_time: this.start_time,
                 end_time: this.end_time,
                 type: this.date_type
