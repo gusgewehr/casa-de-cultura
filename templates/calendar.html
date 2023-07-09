@@ -132,17 +132,35 @@
 					<label class="text-gray-800 block mb-1 font-bold text-sm tracking-wide">Dia</label>
 					<input  class="bg-gray-200 appearance-none border-2 border-gray-200 rounded-lg w-full py-2 px-4 text-gray-700 leading-tight" type="text" x-model="event_date" readonly>
 				</div>
+				
+				<div class="" :class="{
+						'border-2 rounded-md border-red-200 text-red-800': checkTimeDelta() && tried
+					}" 
+				>
+					<p class="" :class="{
+							'hidden': !checkTimeDelta() | !tried
+						}"
+					
+					>
+						O horário de término deve ser posterior ao horário de início
+					</p>
+					<div class="mb-4 ":class="{						
+						'border-2 rounded-md border-red-200 text-red-800': start_time === '' && tried}"
+					>
+						<label class="text-gray-800 block font-bold text-sm tracking-wide">Hora de início</label>
+						<p class="text-sm" :class="{ 'hidden': start_time != '' | !tried}">é necessário definir um horário de início</p>
+						<input  name="hora_inicio" type="time" class="bg-transparent block w-full rounded-md border-0 px-3.5 py-2 pl-4 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" x-model="start_time">
+					</div>
 
-				<div class="mb-4">
-					<label class="text-gray-800 block mb-1 font-bold text-sm tracking-wide">Hora de início</label>
-					<input  name="hora_inicio" type="time" class="block w-full rounded-md border-0 px-3.5 py-2 pl-4 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" x-model="start_time">
+					<div class="mb-4" :class="{						
+						'border-2 rounded-md border-red-200 text-red-800': start_time === '' && tried}"					
+					>
+						
+						<label class="text-gray-800 block font-bold text-sm tracking-wide">Hora término</label>
+						<p class="text-sm" :class="{ 'hidden': end_time != '' | !tried }">é necessário definir um horário de término</p>
+						<input  name="hora_fim" type="time" class="block w-full rounded-md border-0 px-3.5 py-2 pl-4 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" x-model="end_time">
+					</div>
 				</div>
-
-				<div class="mb-4">
-					<label class="text-gray-800 block mb-1 font-bold text-sm tracking-wide">Hora término</label>
-					<input  name="hora_fim" type="time" class="block w-full rounded-md border-0 px-3.5 py-2 pl-4 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" x-model="end_time">
-				</div>
-
 
 				<div class="mb-4">
 					<label class="text-gray-800 block mb-1 font-bold text-sm tracking-wide">Intenção de uso</label>

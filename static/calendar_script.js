@@ -136,6 +136,7 @@ function app() {
         number_of_dates: 0,
         added_dates: event_edit_added_dates,
         openEventModal: false,
+        tried: false,
 
         getCurrentDateId(date){
             return date.id
@@ -153,12 +154,6 @@ function app() {
             return element_type+cur_pos
         },
 
-
-
-
-        ehteste(varqualquer){
-            return 'testou'+varqualquer
-        },
 
         initDate() {
             let today = new Date();
@@ -231,12 +226,47 @@ function app() {
 
         },
 
+        checkTimeDelta(){
+
+            var dateParts = this.event_date.split("/")
+            var eventDate = new Date(dateParts[2], dateParts[1]-1, dateParts[0])
+
+            var start_time_split = this.start_time.split(":")
+            var end_time_split = this.end_time.split(":")
+            
+            var start_datetime = eventDate.setHours(start_time_split[0])
+            var start_datetime = eventDate.setMinutes(start_time_split[1])
+
+            var end_datetime = eventDate.setHours(end_time_split[0])
+            var end_datetime = eventDate.setMinutes(end_time_split[1])
+
+            if(end_datetime - start_datetime <= 0){
+                return true
+            }
+            else{
+                return false
+            }
+
+
+        },
+
         addEvent() {           
             
+            this.tried = true
+
+            var checkTimeDelta = this.checkTimeDelta()
+            
+            if(this.start_time == "" | this.end_time == ""){
+                return
+            }
+
+            else if(checkTimeDelta){
+                return
+            }
 
             dateParts = this.event_date.split("/")
             eventDate = new Date(dateParts[2], dateParts[1]-1, dateParts[0])
-
+        
             this.added_dates.push({
                 id: this.number_of_dates,
                 date: this.event_date,
@@ -253,15 +283,15 @@ function app() {
             });
 
                   
-
-            
-            console.log(this.added_dates)
             // clear the form data
             this.event_date = '';
+            this.start_time = '';
+            this.end_time = '';
 
             //close the modal
             this.openEventModal = false;
-
+            
+            this.tried = false;
             this.number_of_dates++
         },
 
