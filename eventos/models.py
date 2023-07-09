@@ -1,6 +1,9 @@
 from datetime import timezone
 from django.db import models
 from django.contrib.auth.models import User
+from django.db.models import Q
+from django.contrib import messages
+from django.forms import ValidationError
 
 
 
@@ -33,6 +36,42 @@ class Event(models.Model):
 
     def __str__(self):
         return self.nome
+    
+    def clean(self):
+        event_dates = EventDates.objects.filter(evento=self.id)
+        
+        if event_dates:
+            for date in event_dates:
+                check_conflict = EventDates.objects.filter(
+                            evento__aprovado=True
+                        ).exclude(evento=self.id).filter( Q(start_date__gte = date.start_date, start_date__lte = date.end_date) |
+                                    Q(end_date__gte = date.start_date, end_date__lte = date.end_date ) |
+                                    Q(start_date__lte = date.start_date, end_date__gte = date.end_date) |
+                                    Q(start_date__gte = date.start_date, end_date__lte = date.end_date)                                   
+                        )[:1]
+                if check_conflict:                    
+                    raise ValidationError(f'Conflito de horários com {check_conflict[0]}')
+    
+    def save(self, *args, **kwargs):
+        event_dates = EventDates.objects.filter(evento=self.id)
+        
+        if event_dates:
+            for date in event_dates:
+                check_conflict = EventDates.objects.filter(
+                            evento__aprovado=True
+                        ).exclude(evento=self.id).filter( Q(start_date__gte = date.start_date, start_date__lte = date.end_date) |
+                                    Q(end_date__gte = date.start_date, end_date__lte = date.end_date ) |
+                                    Q(start_date__lte = date.start_date, end_date__gte = date.end_date) |
+                                    Q(start_date__gte = date.start_date, end_date__lte = date.end_date)                                   
+                        )[:1]
+                if check_conflict:
+                    raise ValidationError(f'Conflito de horários com {check_conflict[0]}')
+
+
+        super(Event, self).save(*args, **kwargs)
+    
+  
+
     
 
     
@@ -73,6 +112,38 @@ class EventDates(models.Model):
 
     def __str__(self):
         return self.evento.nome + " " + str(self.start_date)
+    
+
+    def clean(self):
+        if self.start_date.date() != self.end_date.date():
+            raise ValidationError('As datas de início e fim devem ocorrer no mesmo dia')
+
+        check_conflict = EventDates.objects.filter(
+            evento__aprovado=True
+            ).exclude(pk=self.id).filter( Q(start_date__gte = self.start_date, start_date__lte = self.end_date) |
+                                    Q(end_date__gte = self.start_date, end_date__lte = self.end_date ) |
+                                    Q(start_date__lte = self.start_date, end_date__gte = self.end_date) |
+                                    Q(start_date__gte = self.start_date, end_date__lte = self.end_date)                                   
+                        )[:1]
+        if check_conflict:
+            raise ValidationError(f'Conflito de horários com {check_conflict[0]} até {check_conflict[0].end_date}')
+
+    def save(self, *args, **kwargs):
+        if self.start_date.date() != self.end_date.date():
+            raise ValidationError('As datas de início e fim devem ocorrer no mesmo dia')
+
+        check_conflict = EventDates.objects.filter(
+            evento__aprovado=True
+            ).exclude(pk=self.id).filter( Q(start_date__gte = self.start_date, start_date__lte = self.end_date) |
+                                    Q(end_date__gte = self.start_date, end_date__lte = self.end_date ) |
+                                    Q(start_date__lte = self.start_date, end_date__gte = self.end_date) |
+                                    Q(start_date__gte = self.start_date, end_date__lte = self.end_date)                                   
+                        )[:1]
+        if check_conflict:
+            raise ValidationError(f'Conflito de horários com {check_conflict[0]} até {check_conflict[0].end_date}')
+
+
+        super(EventDates, self).save(*args, **kwargs)
 
 
 class EventImages(models.Model):

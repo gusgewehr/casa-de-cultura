@@ -10,6 +10,7 @@ from django.utils import timezone
 from django.conf import settings
 from django.core.exceptions import PermissionDenied
 from django.contrib import messages
+from django.db.models import Q
 
 
 # Create your views here.
@@ -126,27 +127,39 @@ def cadastro_eventos(request, event_pk = None):
                 number_of_dates = int(response['number_of_dates'])
                 if int(number_of_dates) > 0:
                     for i in range(0, number_of_dates):
-                        try:
-                            date_obj = datetime.strptime(
-                                response['date_{}'.format(i)], '%d/%m/%Y')
+                        date_obj = datetime.strptime(
+                            response['date_{}'.format(i)], '%d/%m/%Y')
 
-                            start_time_obj = datetime.strptime(
-                                response['start_time_{}'.format(i)], '%H:%M').time()
+                        start_time_obj = datetime.strptime(
+                            response['start_time_{}'.format(i)], '%H:%M').time()
 
-                            end_time_obj = datetime.strptime(
-                                response['end_time_{}'.format(i)], '%H:%M').time()
-                            
-                            date_event = EventDates(
-                                evento=old_event,
-                                start_date=datetime.combine(
-                                    date_obj, start_time_obj),
-                                end_date=datetime.combine(date_obj, end_time_obj),
-                                uso=response['type_{}'.format(i)]
-                            )
+                        end_time_obj = datetime.strptime(
+                            response['end_time_{}'.format(i)], '%H:%M').time()
+                        
+                        start_datetime  =datetime.combine(date_obj, start_time_obj)
+                        end_datetime = datetime.combine(date_obj, end_time_obj)
+                        
+                        check_conflict = EventDates.objects.filter(
+                            start_date__gte = datetime.now(), evento__aprovado=True
+                        ).filter( Q(start_date__gte = start_datetime, start_date__lte = end_datetime) |
+                                    Q(end_date__gte = start_datetime, end_date__lte = end_datetime )  |
+                                    Q(start_date__lte =start_datetime, end_date__gte = end_datetime)   |
+                                    Q(start_date__gte = start_datetime, end_date__lte = end_datetime)                                                                 
+                        )[:1]
 
-                            date_event.save()
-                        except:
-                            print(f'Data número {i} não encontrada, indo para a p´roxima')
+                        if check_conflict:
+                            event.delete()
+                            messages.error(request, 'Houve conflito de datas e seu evento não foi cadastrado')
+                            return redirect('/cadastro-eventos')    
+                        
+                        date_event = EventDates(
+                            evento=old_event,
+                            start_date=start_datetime,
+                            end_date=end_datetime,
+                            uso=response['type_{}'.format(i)]
+                        )
+
+                        date_event.save()
                         
                 
                 try:
@@ -214,29 +227,41 @@ def cadastro_eventos(request, event_pk = None):
 
                 number_of_dates = int(response['number_of_dates'])
                 if int(number_of_dates) > 0:
-                    for i in range(0, number_of_dates):
-                        try:
-                            if response['date_{}'.format(i)]:
-                                date_obj = datetime.strptime(
-                                    response['date_{}'.format(i)], '%d/%m/%Y')
+                    for i in range(0, number_of_dates):                        
+                        if response['date_{}'.format(i)]:
+                            date_obj = datetime.strptime(
+                                response['date_{}'.format(i)], '%d/%m/%Y')
 
-                                start_time_obj = datetime.strptime(
-                                    response['start_time_{}'.format(i)], '%H:%M').time()
+                            start_time_obj = datetime.strptime(
+                                response['start_time_{}'.format(i)], '%H:%M').time()
 
-                                end_time_obj = datetime.strptime(
-                                    response['end_time_{}'.format(i)], '%H:%M').time()
+                            end_time_obj = datetime.strptime(
+                                response['end_time_{}'.format(i)], '%H:%M').time()
+                            
+                            start_datetime  =datetime.combine(date_obj, start_time_obj)
+                            end_datetime = datetime.combine(date_obj, end_time_obj)
+                            
+                            check_conflict = EventDates.objects.filter(
+                                start_date__gte = datetime.now(), evento__aprovado=True
+                            ).filter( Q(start_date__gte = start_datetime, start_date__lte = end_datetime) |
+                                        Q(end_date__gte = start_datetime, end_date__lte = end_datetime )  |
+                                    Q(start_date__lte = start_datetime, end_date__gte = end_datetime) |
+                                    Q(start_date__gte = start_datetime, end_date__lte = end_datetime)                                   
+                            )[:1]
 
-                                date_event = EventDates(
-                                    evento=event,
-                                    start_date=datetime.combine(
-                                        date_obj, start_time_obj),
-                                    end_date=datetime.combine(date_obj, end_time_obj),
-                                    uso=response['type_{}'.format(i)]
-                                )
+                            if check_conflict:
+                                event.delete()
+                                messages.error(request, 'Houve conflito de horários e seu evento não foi cadastrado')
+                                return redirect('/cadastro-eventos')    
 
-                                date_event.save()
-                        except:
-                            print(f"Não foi possível encontrar a data {i}")
+                            date_event = EventDates(
+                                evento=event,
+                                start_date=start_datetime,
+                                end_date= end_datetime,
+                                uso=response['type_{}'.format(i)]
+                            )
+
+                            date_event.save()
 
                 fss = FileSystemStorage()
                 file = request.FILES['picture__input']
