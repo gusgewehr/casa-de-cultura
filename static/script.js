@@ -149,16 +149,26 @@ function imageAddEvents() {
 
 function validateBannerNotEmpty(){
     const inputFile = document.querySelector("#picture__input");
-        const files = inputFile.files;
+    const files = inputFile.files;
+
+    const is_editing = document.querySelector("#event_id");
+    const event_id = is_editing.value;
+
+    console.log(event_id)
     
-        if (files.length == 0){
-            var banner_warning = document.getElementById('banner_warning')
-            banner_warning.setAttribute('style', 'display: block;')
-        }
-        else{
+    if (files.length == 0 && !event_id){
+        var banner_warning = document.getElementById('banner_warning')
+        banner_warning.setAttribute('style', 'display: block;')
+    }
+    else{
+        try{
             var input_required_banner = document.getElementById('banner_input_required')
             input_required_banner.remove()
         }
+        catch{
+
+        }
+    }
 
 }
 

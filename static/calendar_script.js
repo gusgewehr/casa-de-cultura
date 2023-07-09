@@ -17,8 +17,13 @@ function validateDateNotEmpty(){
          date_warning.setAttribute('style', 'display: block;')
      }
      else{
-        var input_required_date = document.getElementById('date_input_required')
-        input_required_date.remove()
+        try{
+            var input_required_date = document.getElementById('date_input_required')
+            input_required_date.remove()
+        }
+        catch{
+
+        }
      }     
  } 
 
@@ -148,9 +153,9 @@ function app() {
         event_date: '',
         end_time: '',
         date_type: 'AP',
-        event_theme: 'blue',
-        number_of_dates: 0,
+        event_theme: 'blue',        
         added_dates: event_edit_added_dates,
+        number_of_dates: 0,
         openEventModal: false,
         tried: false,
 
@@ -176,6 +181,8 @@ function app() {
             this.month = today.getMonth();
             this.year = today.getFullYear();
             this.datepickerValue = new Date(this.year, this.month, today.getDate()).toDateString();
+
+            this.number_of_dates = this.added_dates.length
         },
 
         isToday(date) {
