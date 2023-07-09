@@ -7,6 +7,22 @@ const all_logged_dates = JSON.parse(document.getElementById('all_logged_dates').
 const all_dates_json = $.parseJSON("{ \"all_dates\": " + all_logged_dates + "}")
 
 
+function validateDateNotEmpty(){
+
+    var elem_n_dates = document.getElementById('number_of_dates')
+     var number_of_dates  = elem_n_dates.value
+
+     if(number_of_dates == "0") {
+         var date_warning = document.getElementById('date_warning')
+         date_warning.setAttribute('style', 'display: block;')
+     }
+     else{
+        var input_required_date = document.getElementById('date_input_required')
+        input_required_date.remove()
+     }     
+ } 
+
+
 
 
 function create_registered_events_dates(){
@@ -173,6 +189,11 @@ function app() {
             // open the modal
             this.openEventModal = true;
             this.event_date = new Date(this.year, this.month, date).toLocaleDateString("pt-BR");
+
+
+            var date_warning = document.getElementById('date_warning')
+            date_warning.setAttribute('style', 'display: none;')
+
         },
 
         getShowingMonth() {

@@ -12,9 +12,34 @@ document.addEventListener(
         ) {
           close_modal()
         }
+        if( event.target.matches("#submit_button") ){
+            validateBannerNotEmpty()
+            validateDateNotEmpty()
+            validateNomeNotEmpty()
+            validateDescricaoNotEmpty()
+            validatePrecoNotEmpty()
+        }
     },
     false
   )
+
+  document.addEventListener(
+    "change",
+    function(event) {
+        if( event.target.matches("#nome") ){
+            validateNomeNotEmpty()
+        }
+        else if (event.target.matches("#descricao")){
+            validateDescricaoNotEmpty()
+        }
+        else if (event.target.matches("#preco")){
+            validatePrecoNotEmpty()
+        }
+    },
+    false
+  )
+
+
 
 
 
@@ -53,6 +78,10 @@ function imagePreview() {
     const file = inputFile.files[0];
 
     if (file) {
+
+        var banner_warning = document.getElementById('banner_warning')
+        banner_warning.setAttribute('style', 'display: none;')
+
         const reader = new FileReader();
 
         reader.addEventListener("load", function (reader) {
@@ -116,3 +145,62 @@ function imageAddEvents() {
     };
 
 }
+
+
+function validateBannerNotEmpty(){
+    const inputFile = document.querySelector("#picture__input");
+        const files = inputFile.files;
+    
+        if (files.length == 0){
+            var banner_warning = document.getElementById('banner_warning')
+            banner_warning.setAttribute('style', 'display: block;')
+        }
+        else{
+            var input_required_banner = document.getElementById('banner_input_required')
+            input_required_banner.remove()
+        }
+
+}
+
+function validateNomeNotEmpty(){
+    var elem_nome = document.getElementById('nome')
+    var nome  = elem_nome.value
+
+    var nome_warning = document.getElementById('nome_warning')
+    if(nome == "") {         
+        nome_warning.setAttribute('style', 'display: block;')
+    }
+    else{
+        nome_warning.setAttribute('style', 'display: none;')
+    }  
+}
+
+function validateDescricaoNotEmpty(){
+    var elem_descricao = document.getElementById('descricao')
+    var descricao  = elem_descricao.value
+
+    console.log(descricao)
+
+    var descricao_warning = document.getElementById('descricao_warning')
+    if(descricao == "") {         
+        descricao_warning.setAttribute('style', 'display: block;')
+    }
+    else{
+        descricao_warning.setAttribute('style', 'display: none;')
+    }  
+}
+
+function validatePrecoNotEmpty(){
+    var elem_preco = document.getElementById('preco')
+    var preco  = elem_preco.value
+
+    var preco_warning = document.getElementById('preco_warning')
+    if(preco == "" && !document.getElementById("gratuito").checked) {         
+        preco_warning.setAttribute('style', 'display: block;')
+    }
+    else{
+        preco_warning.setAttribute('style', 'display: none;')
+    }  
+}
+
+
