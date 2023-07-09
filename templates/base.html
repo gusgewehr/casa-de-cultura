@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{% block title %}{% endblock title %} </title>
-
+    <link rel="icon" type="image/x-icon" href="/static/img/logo.ico">
     
 
     <link rel="dns-prefetch" href="//unpkg.com" />
@@ -66,7 +66,7 @@
     <nav class="relative z-5 border-gray-200 dark:bg-gray-900">
         <div class="max-w-screen-2xl flex flex-wrap items-center justify-between mx-auto p-4">
             <a href="/home" class="flex items-center">
-                <img src="/static/logo.png" class="h-8 mr-3" alt="Casa de Cultura Logo" />
+                <img src="/static/img/logo.png" class="h-8 mr-3" alt="Casa de Cultura Logo" />
                 <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">Casa de
                     Cultura</span>
             </a>
@@ -92,21 +92,38 @@
                     </li>
                     {% endif %}
                     <li>
-                        <a href="/home"
-                            class="bg-transparent block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
+                        {% url 'home' as url %}
+                        <a href="{{ url }}"
+                            {% if request.path == url %}
+                            class="bg-transparent block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:text-blue-700 md:p-0 dark:text-white md:dark:text-blue-500 dark:hover:bg-gray-700 dark:text-white md:dark:hover:bg-transparent"
+                            {% else %}
+                                class="bg-transparent block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
+                            {% endif %}
                             aria-current=" page">Eventos</a>
                     </li>
                     <li>
-                        <a href="/cadastro-eventos"
-                            class="bg-transparent block py-2 pl-3 pr-4 text-gray-900  rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">
-                            Cadastrar Evento</a>
+                        {% url 'cadastro-eventos' as url %}
+                        <a href="{{ url }}"
+                            {% if request.path == url %}
+                                class="bg-transparent block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:text-blue-700 md:p-0 dark:text-white md:dark:text-blue-500 dark:hover:bg-gray-700 dark:text-white md:dark:hover:bg-transparent"
+                            {% else %}
+                                class="bg-transparent block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
+                            {% endif %}
+                            aria-current=" page">Cadastrar Evento
+                        </a>
                     </li>
 
                     {% if user.is_authenticated%}
                     <li>
-                        <a href="/meus-eventos"
-                            class="bg-transparent block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">
-                            Meus Eventos</a>
+                        {% url 'meus-eventos' as url %}
+                        <a href="{{ url }}"
+                            {% if request.path == url %}
+                                class="bg-transparent block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:text-blue-700 md:p-0 dark:text-white md:dark:text-blue-500 dark:hover:bg-gray-700 dark:text-white md:dark:hover:bg-transparent"
+                            {% else %}
+                                class="bg-transparent block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
+                            {% endif %}
+                            aria-current=" page">Meus Eventos
+                        </a>
                     </li>
 
                     <li>
@@ -116,9 +133,15 @@
                     </li>
                     {% else %}
                     <li>
-                        <a href="{% url 'login' %}"
-                            class="bg-transparent block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">
-                            Login</a>
+                        {% url 'login' as url %}
+                        <a href="{{ url }}"
+                            {% if request.path == url %}
+                                class="bg-transparent block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:text-blue-700 md:p-0 dark:text-white md:dark:text-blue-500 dark:hover:bg-gray-700 dark:text-white md:dark:hover:bg-transparent"
+                            {% else %}
+                                class="bg-transparent block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
+                            {% endif %}
+                            aria-current=" page">Login
+                        </a>
                     </li>
                     {% endif %}
                 </ul>

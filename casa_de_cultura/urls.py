@@ -24,11 +24,11 @@ admin.site.site_header = 'Administração Casa de Cultura Osvaldo Krames'
 
 urlpatterns = [
     path("", eventos),
-    path("home", eventos),
-    path("cadastro-eventos", cadastro_eventos),
+    path("home", eventos, name='home'),
+    path("cadastro-eventos", cadastro_eventos, name='cadastro-eventos'),
     path("cadastro-eventos/<int:event_pk>", cadastro_eventos),
     path("accounts/", include("django.contrib.auth.urls")),
-    path("meus-eventos", meusEventos),
+    path("meus-eventos", meusEventos, name='meus-eventos'),
     path("admin", admin.site.urls),
     path("evento/<int:id>", evento, name='evento'),
 ]
