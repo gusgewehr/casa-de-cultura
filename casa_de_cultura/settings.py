@@ -14,6 +14,8 @@ from pathlib import Path
 import os
 import platform
 from django.contrib import messages
+import os
+from dotenv import load_dotenv
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -22,6 +24,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 sistema_operacional = platform.system()
 
+if sistema_operacional != 'Windows':
+    env = load_dotenv()
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
@@ -29,10 +34,15 @@ sistema_operacional = platform.system()
 SECRET_KEY = "django-insecure-w1+%=dnkf74)$0^ydxl*vm!xi^koj*0b#%@%bk*90@zz$&x&v@"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = (os.getenv('DJANGO_DEBUG', False) == 'True')
 
-ALLOWED_HOSTS = []
-
+if DEBUG or sistema_operacional == 'Windows':
+    ALLOWED_HOSTS = ['*']
+      
+    SECRET_KEY = 'django-insecure-9nw8@83g_+7fdi84y1-3mrw%!ws0jbn9ifz9^qaq7hac6fou!&'
+else:
+    ALLOWED_HOSTS = ['.gusgewehr.com.br', '191.252.193.4']
+    SECRET_KEY = os.environ['DJANGO_SECRET_KEY']
 
 # Application definition
 
@@ -79,14 +89,24 @@ WSGI_APPLICATION = "casa_de_cultura.wsgi.application"
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
-
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+if DEBUG or sistema_operacional == 'Windows':
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": BASE_DIR / "db.sqlite3",
+        }
     }
-}
-
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql_psycopg2',
+            'NAME': os.environ['DJANGO_DB'],
+            'USER': os.environ['DJANGO_DB_USER'],
+            'PASSWORD': os.environ['DJANGO_DB_PASSWORD'],
+            'HOST': 'localhost',
+            'PORT': 5432,
+        }
+    }
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
@@ -133,6 +153,8 @@ else:
     MEDIA_ROOT = '/var/opt/portal_analytics/media/'
 
 MEDIA_URL = '/media/'
+
+
 LOGOUT_REDIRECT_URL = '/accounts/login'
 LOGIN_REDIRECT_URL = '/'
 
@@ -140,3 +162,6 @@ LOGIN_REDIRECT_URL = '/'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+
+
