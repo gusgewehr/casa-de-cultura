@@ -167,4 +167,27 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 
 
-print(DEBUG)
+if not DEBUG and sistema_operacional != 'Windows':
+    LOGGING = {
+        'version': 1,
+        'disable_existing_loggers': False,
+        'formatters': {
+            'default': {
+            'format': '[%(asctime)s] %(levelname)s: '
+                '%(message)s',
+            }
+        },
+        'handlers': {
+            'file': {
+                'class': 'logging.handlers.TimedRotatingFileHandler',
+                'filename': '/var/log/casa_de_cultura/casa_de_cultura.log',
+                'when': 'midnight',
+                'backupCount': 60,
+                'formatter': 'default',
+            },
+        },
+        'root': {
+            'handlers': ['file'],
+            'level': 'INFO',
+        },
+    }
