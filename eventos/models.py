@@ -106,7 +106,7 @@ class EventDates(models.Model):
         return type_choices[self.uso]
     
     def natural_key(self):
-        return (self.id,)+self.evento.natural_key()
+        return (self.id,self.start_date,self.end_date,self.uso)+self.evento.natural_key()
     
     natural_key.dependencies = ["example_app.evento"]
 

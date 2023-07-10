@@ -41,8 +41,8 @@ function create_registered_events_dates(){
         "aprovado": "red",
     }
 
-
     all_dates_json["all_dates"].forEach(element => {
+
         var date = element['fields']
 
         if(date["evento"]["aprovado"] =="True" && date['uso'] == "AP"){
@@ -54,10 +54,13 @@ function create_registered_events_dates(){
         
 
         start_date = new Date(date["start_date"])
+        end_date = new Date(date["end_date"])
         this.events.push({
-                id: -1,
+                id: element['pk'],
                 event_date: date['start_date'],
-                event_title: start_date.getHours()+":"+start_date.getMinutes()+" "+date['evento']['nome'],
+                start_time: start_date.getHours()+":"+start_date.getMinutes(),
+                end_time: end_date.getHours()+":"+end_date.getMinutes(),
+                event_title: date['evento']['nome'],
                 event_theme: dict[cor]
             });
 
@@ -173,6 +176,32 @@ function app() {
             var cur_pos = this.added_dates.indexOf(date)
 
             return element_type+cur_pos
+        },
+
+        generateTooltipId(event){
+
+            return 'tooltip_'+event.id
+
+        },
+
+        getTooltipContent(event){
+            return event.start_time+" - "+event.end_time
+        },
+        showDateTooltip(event){
+            var tooltip = document.getElementById('tooltip_'+event.id)
+
+            tooltip.setAttribute('style', 'display: block;')
+
+
+
+        },
+
+        hideDateTooltip(event){
+            console.log('tentou')
+
+            var tooltip = document.getElementById('tooltip_'+event.id)
+
+            tooltip.setAttribute('style', 'display: none;')
         },
 
 
@@ -306,6 +335,8 @@ function app() {
             this.events.push({
                 id: this.number_of_dates,
                 event_date: eventDate,
+                start_time: this.start_time,
+                end_time: this.end_time,
                 event_title: this.event_title,
                 event_theme: this.event_theme
             });

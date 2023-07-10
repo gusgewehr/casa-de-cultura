@@ -32,7 +32,7 @@ def cadastro_eventos(request, event_pk = None):
             start_date__gte=datetime.now()
         ).distinct().order_by('start_date')
 
-    all_logged_dates = serializers.serialize('json', all_dates, indent = 2,use_natural_foreign_keys=True, use_natural_primary_keys=True)   
+    all_logged_dates = serializers.serialize('json', all_dates, indent = 2,use_natural_foreign_keys=True, use_natural_primary_keys=False)   
 
     if event_pk and request.method != 'POST':        
         

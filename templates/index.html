@@ -213,41 +213,50 @@
 {% block content %}
 <section class="flex justify-center">
     <div class="container ">
-        <div class="carousel">
-            {% for i in range|slice:":6" %}
-            {% if forloop.first %}
-            <input type="radio" name="slides" checked="checked" id="slide-{{forloop.counter}}">
-            {% else %}
-            <input type="radio" name="slides" id="slide-{{forloop.counter}}">
-            {% endif %}
-            {% endfor %}
-            <ul class="carousel__slides max-w-8xl">
-                {% for date in dates|slice:":6" %}
-                <li class="carousel__slide">
-                    <figure>
-                        <div>
-                            <img src="{{ date.image.image.url }}" alt="">
-                        </div>
-                        <figcaption>
-                            <a href="{% url 'evento' date.event.id %}">
-                                <h4 class="text-4xl font-bold">{{ date.event.nome }}</h4>
-                            </a>
-                            {{date.event.descricao|slice:":200" }}
-                            <span class="credit">{{ date.date.start_date }},
-                                Ingresso: {{ date.event.preco_ingresso }}</span>
-                        </figcaption>
-                    </figure>
-                </li>
+        {% if dates %}
+            <div class="carousel">
+                {% for i in range|slice:":6" %}
+                {% if forloop.first %}
+                <input type="radio" name="slides" checked="checked" id="slide-{{forloop.counter}}">
+                {% else %}
+                <input type="radio" name="slides" id="slide-{{forloop.counter}}">
+                {% endif %}
                 {% endfor %}
-            </ul>
-            <ul class="carousel__thumbnails">
-                {% for date in dates|slice:":6" %}
-                <li>
-                    <label for="slide-{{forloop.counter}}"><img src="{{ date.image.image.url }}" alt=""></label>
-                </li>
-                {% endfor %}
-            </ul>
-        </div>
+                <ul class="carousel__slides max-w-8xl">
+                    {% for date in dates|slice:":6" %}
+                    <li class="carousel__slide">
+                        <figure>
+                            <div>
+                                <img src="{{ date.image.image.url }}" alt="">
+                            </div>
+                            <figcaption>
+                                <a href="{% url 'evento' date.event.id %}">
+                                    <h4 class="text-4xl font-bold">{{ date.event.nome }}</h4>
+                                </a>
+                                {{date.event.descricao|slice:":200" }}
+                                <span class="credit">{{ date.date.start_date }},
+                                    Ingresso: {{ date.event.preco_ingresso }}</span>
+                            </figcaption>
+                        </figure>
+                    </li>
+                    {% endfor %}
+                </ul>
+                <ul class="carousel__thumbnails">
+                    {% for date in dates|slice:":6" %}
+                    <li>
+                        <label for="slide-{{forloop.counter}}"><img src="{{ date.image.image.url }}" alt=""></label>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% else %}
+            <div class="w-full flex flex-col justify-center items-center h-full">
+                <h1 class="text-8xl font-bold text-purple-500 mb-5" style="transform: rotate(90deg);">
+                    =(
+                </h1>
+                <h1 class="text-2xl font-bold">Não há eventos para este período</h1>
+            </div>
+        {% endif %}
     </div>
 </section>
 {% endblock content %}
