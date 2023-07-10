@@ -1,6 +1,8 @@
 # Case de Cultura
 Trabalho do curso de Ciência da Computação na Matéria Projeto e Desenvolvimento de Sistemas
 
+
+
 ## Atualização
 Para atualizar a aplicação basta seguir estes passos
 
@@ -144,8 +146,8 @@ Inserir o código abaixo no arquivo
 server {
     listen 80;
     listen [::]:80;
-    server_name casadecultura.gusgewehr.com.br;
-    root /var/www/casadecultura.stara.com.br;
+    server_name casadecultura.gusgewehr.com;
+    root /var/www/casadecultura.gusgewehr.com;
     location / {
         location / {
             proxy_pass http://localhost:8080;
@@ -159,15 +161,8 @@ server {
     location /static/ {
         alias /var/cache/casa_de_cultura/static/;
     }
-    location /media/uploads/ {
-        alias /var/opt/casa_de_cultura/media/uploads/;
-    }
-    location /media/django-summernote/ {
-        alias /var/opt/casa_de_cultura/media/django-summernote/;
-    }
-    location /media/protected/{
-        internal;
-        alias /var/opt/casa_de_cultura/media/protected/;
+    location /media/ {
+        alias /var/opt/casa_de_cultura/media/;
     }
 }
 ```
