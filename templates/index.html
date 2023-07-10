@@ -76,6 +76,7 @@
         padding: 0;
         margin: 0;
         overflow: hidden;
+        max-height: 80vh;
         white-space: nowrap;
         box-sizing: border-box;
         display: flex;
@@ -136,6 +137,14 @@
         width: 40%;
         min-width: 150px;
     }
+    @media only screen and (max-width: 650px) {
+        .description {
+            display: block;
+            height:20vh;
+            text-overflow: ellipsis;
+            overflow: hidden;
+        }
+    }   
 
     .carousel__slide .credit {
         margin-top: 1rem;
@@ -232,10 +241,14 @@
                             <figcaption>
                                 <a href="{% url 'evento' date.event.id %}">
                                     <h4 class="text-4xl font-bold">{{ date.event.nome }}</h4>
-                                </a>
-                                {{date.event.descricao|slice:":200" }}
+                                    <span class="description">
+
+                                        {{date.event.descricao|slice:":200" }}...<span class="text-gray-500 hover:underline">ver mais</span>
+                                    </span>
+                                
                                 <span class="credit">{{ date.date.start_date }},
                                     Ingresso: {{ date.event.preco_ingresso }}</span>
+                                </a>
                             </figcaption>
                         </figure>
                     </li>
