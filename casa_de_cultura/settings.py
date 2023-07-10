@@ -142,20 +142,20 @@ USE_TZ = False
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-if DEBUG and sistema_operacional == 'Windows':
-    STATIC_URL = 'static/'
-    STATICFILES_DIRS = [
-        BASE_DIR / "static",
-    ]
+STATIC_ROOT = '/var/cache/casa_de_cultura/static/'
+STATIC_URL = '/static/'
 
-    MEDIA_URL = '/media/'
+if DEBUG and sistema_operacional == 'Windows':
     MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 else:
-    STATIC_ROOT = '/var/cache/casa_de_cultura/static/'
-    STATIC_URL = '/static/'
-
     MEDIA_ROOT = '/var/opt/casa_de_cultura/media/'
-    MEDIA_URL = '/media/'
+    
+MEDIA_URL = '/media/'
+
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "static")
+]
+
 
 LOGOUT_REDIRECT_URL = '/accounts/login'
 LOGIN_REDIRECT_URL = '/'
