@@ -41,7 +41,7 @@ if DEBUG or sistema_operacional == 'Windows':
       
     SECRET_KEY = "django-insecure-w1+%=dnkf74)$0^ydxl*vm!xi^koj*0b#%@%bk*90@zz$&x&v@"
 else:
-    ALLOWED_HOSTS = ['.gusgewehr.com.br', '191.252.193.4']
+    ALLOWED_HOSTS = ['.gusgewehr.com', '191.252.193.4', '127.0.0.1']
     SECRET_KEY = os.environ['DJANGO_SECRET_KEY']
 
 # Application definition
@@ -142,7 +142,7 @@ USE_TZ = False
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-if DEBUG:
+if DEBUG and sistema_operacional == 'Windows':
     STATIC_URL = 'static/'
     STATICFILES_DIRS = [
         BASE_DIR / "static",
