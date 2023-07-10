@@ -31,15 +31,15 @@ if sistema_operacional != 'Windows':
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-w1+%=dnkf74)$0^ydxl*vm!xi^koj*0b#%@%bk*90@zz$&x&v@"
+
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = (os.getenv('DJANGO_DEBUG', False) == 'True')
+DEBUG = (os.getenv('DJANGO_DEBUG', 'True') == 'True')
 
 if DEBUG or sistema_operacional == 'Windows':
     ALLOWED_HOSTS = ['*']
       
-    SECRET_KEY = 'django-insecure-9nw8@83g_+7fdi84y1-3mrw%!ws0jbn9ifz9^qaq7hac6fou!&'
+    SECRET_KEY = "django-insecure-w1+%=dnkf74)$0^ydxl*vm!xi^koj*0b#%@%bk*90@zz$&x&v@"
 else:
     ALLOWED_HOSTS = ['.gusgewehr.com.br', '191.252.193.4']
     SECRET_KEY = os.environ['DJANGO_SECRET_KEY']
@@ -142,18 +142,20 @@ USE_TZ = False
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-STATIC_URL = "static/"
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "static"),
-]
+if DEBUG:
+    STATIC_URL = 'static/'
+    STATICFILES_DIRS = [
+        BASE_DIR / "static",
+    ]
 
-if DEBUG or sistema_operacional == 'Windows':
+    MEDIA_URL = '/media/'
     MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 else:
-    MEDIA_ROOT = '/var/opt/portal_analytics/media/'
+    STATIC_ROOT = '/var/cache/casa_de_cultura/static/'
+    STATIC_URL = '/static/'
 
-MEDIA_URL = '/media/'
-
+    MEDIA_ROOT = '/var/opt/casa_de_cultura/media/'
+    MEDIA_URL = '/media/'
 
 LOGOUT_REDIRECT_URL = '/accounts/login'
 LOGIN_REDIRECT_URL = '/'
@@ -165,3 +167,4 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 
 
+print(DEBUG)
